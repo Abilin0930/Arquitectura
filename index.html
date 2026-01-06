@@ -28,7 +28,7 @@
     font-size: 1.2rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   }
 
   h1 {
@@ -112,17 +112,19 @@
     position: relative;
   }
 
+  /* Hover con efecto glow */
   .materia:hover {
     background-color: #EFF6FF;
     border-color: #3B82F6;
     transform: scale(1.03);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
   }
 
   .materia.aprobada {
     background-color: #34D399;
     color: #FFFFFF;
     border-color: #059669;
-    box-shadow: 0 3px 6px rgba(5,150,105,0.3);
+    box-shadow: 0 0 12px rgba(16,185,129,0.5);
   }
 
   .materia.bloqueada {
@@ -130,9 +132,10 @@
     color: #9CA3AF;
     border-color: #D1D5DB;
     cursor: not-allowed;
+    box-shadow: none;
   }
 
-  /* Tooltip tipo burbuja animado */
+  /* Tooltip tipo burbuja */
   .tooltip {
     position: absolute;
     top: -48px;
@@ -371,4 +374,3 @@ crearMalla();
 </script>
 </body>
 </html>
-
