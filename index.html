@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Malla Curricular - Arquitectura</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #F9FAFB;
-    color: #1E293B;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #F8FAFC;
+    color: #1F2937;
     margin: 0;
     padding: 2rem;
     display: flex;
@@ -17,93 +17,127 @@
   }
 
   h1 {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 2rem;
+    color: #1E3A8A;
     margin-bottom: 2rem;
     text-align: center;
-    color: #1E293B;
   }
 
   .malla {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
     max-width: 1200px;
     width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 1rem;
   }
 
   .ciclo {
-    background-color: #F3F4F6;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
   }
 
   .ciclo h2 {
-    font-weight: 500;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #2563EB;
+    margin: 0.5rem 0 1rem 0;
+    border-top: 3px solid #1E3A8A;
+    padding-top: 0.5rem;
+    width: 100%;
     text-align: center;
-    color: #374151;
   }
 
   .semestre {
     margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
   }
 
   .semestre h3 {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1rem;
+    color: #2563EB;
     margin-bottom: 0.5rem;
-    color: #374151;
   }
 
   .materia {
-    font-weight: 400;
-    font-size: 0.95rem;
-    padding: 0.6rem;
-    margin: 0.4rem 0;
-    border-radius: 8px;
-    border: 1px solid #E5E7EB;
     background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.4rem auto;
+    width: 160px;
     text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #1F2937;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    position: relative;
   }
 
   .materia:hover {
-    background-color: #EFF6FF;
     border-color: #2563EB;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.15);
   }
 
   .materia.aprobada {
-    background-color: #DBEAFE;
-    color: #1E40AF;
+    background-color: #E0F2FE;
     border-color: #2563EB;
-    text-decoration: none;
+    color: #1E3A8A;
   }
 
   .materia.bloqueada {
-    background-color: #E5E7EB;
+    background-color: #F3F4F6;
     color: #9CA3AF;
-    cursor: not-allowed;
     border-color: #E5E7EB;
+    cursor: not-allowed;
   }
 
-  .materia.bloqueada:hover::after {
-    content: attr(data-tooltip);
+  /* Tooltip tipo burbuja */
+  .tooltip {
     position: absolute;
-    left: 105%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #1E293B;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1E3A8A;
     color: #FFFFFF;
-    padding: 5px 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
     font-size: 0.85rem;
-    border-radius: 4px;
     white-space: nowrap;
-    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 20;
+  }
+
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #1E3A8A transparent transparent transparent;
+  }
+
+  .materia.bloqueada:hover .tooltip {
+    opacity: 1;
   }
 </style>
 </head>
@@ -112,7 +146,6 @@
 <div class="malla" id="malla"></div>
 
 <script>
-// Datos completos de la malla curricular
 const mallaData = [
   {
     nombre: "Primer Año",
@@ -235,7 +268,6 @@ const mallaData = [
   }
 ];
 
-// Progreso en localStorage
 const progreso = JSON.parse(localStorage.getItem("progresoMaterias") || "{}");
 
 function guardarProgreso() {
@@ -249,7 +281,6 @@ function crearMalla() {
   mallaData.forEach(ciclo => {
     const cicloDiv = document.createElement("div");
     cicloDiv.classList.add("ciclo");
-
     const h2 = document.createElement("h2");
     h2.textContent = ciclo.nombre;
     cicloDiv.appendChild(h2);
@@ -257,7 +288,6 @@ function crearMalla() {
     ciclo.semestres.forEach(sem => {
       const semDiv = document.createElement("div");
       semDiv.classList.add("semestre");
-
       const h3 = document.createElement("h3");
       h3.textContent = sem.nombre;
       semDiv.appendChild(h3);
@@ -268,15 +298,18 @@ function crearMalla() {
         matDiv.textContent = mat.nombre;
 
         const bloqueada = mat.prerequisitos && mat.prerequisitos.some(p => !progreso[p]);
-        if(bloqueada){
+        if (bloqueada) {
           matDiv.classList.add("bloqueada");
-          matDiv.setAttribute("data-tooltip","Faltan: "+mat.prerequisitos.filter(p=>!progreso[p]).join(", "));
+          const tooltip = document.createElement("div");
+          tooltip.classList.add("tooltip");
+          tooltip.textContent = "Faltan: " + mat.prerequisitos.filter(p => !progreso[p]).join(", ");
+          matDiv.appendChild(tooltip);
         }
 
-        if(progreso[mat.nombre]) matDiv.classList.add("aprobada");
+        if (progreso[mat.nombre]) matDiv.classList.add("aprobada");
 
-        matDiv.addEventListener("click",()=>{
-          if(bloqueada) return;
+        matDiv.addEventListener("click", () => {
+          if (bloqueada) return;
           progreso[mat.nombre] = !progreso[mat.nombre];
           guardarProgreso();
           crearMalla();
