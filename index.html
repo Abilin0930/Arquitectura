@@ -2,26 +2,43 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Malla Curricular - Arquitectura</title>
+<title>MALLA CURRICULAR - ARQUITECTURA</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #F8FAFC;
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
     color: #1F2937;
     margin: 0;
-    padding: 2rem;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
+  /* Barra superior */
+  header {
+    background-color: #1E3A8A;
+    color: #FFFFFF;
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
   h1 {
     font-weight: 700;
     font-size: 2rem;
-    color: #1E3A8A;
-    margin-bottom: 2rem;
+    color: #FFFFFF;
+    margin: 2rem 0;
     text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
   }
 
   .malla {
@@ -29,7 +46,7 @@
     justify-content: center;
     align-items: flex-start;
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 1300px;
     width: 100%;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -37,26 +54,31 @@
   }
 
   .ciclo {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    flex: 0 0 220px;
+    background-color: #F1F5F9;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    flex: 0 0 240px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .ciclo:hover {
+    transform: translateY(-5px);
   }
 
   .ciclo h2 {
-    font-weight: 600;
-    font-size: 1.25rem;
-    color: #2563EB;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #1E3A8A;
     margin: 0.5rem 0 1rem 0;
-    border-top: 3px solid #1E3A8A;
-    padding-top: 0.5rem;
-    width: 100%;
     text-align: center;
+    border-bottom: 3px solid #2563EB;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    text-transform: uppercase;
   }
 
   .semestre {
@@ -69,19 +91,20 @@
     font-weight: 600;
     font-size: 1rem;
     color: #2563EB;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
   }
 
   .materia {
     background-color: #FFFFFF;
     border: 1px solid #E5E7EB;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 0.8rem;
     margin: 0.4rem auto;
-    width: 160px;
+    width: 170px;
     text-align: center;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #1F2937;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     cursor: pointer;
@@ -90,39 +113,42 @@
   }
 
   .materia:hover {
-    border-color: #2563EB;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.15);
+    background-color: #EFF6FF;
+    border-color: #3B82F6;
+    transform: scale(1.03);
   }
 
   .materia.aprobada {
-    background-color: #E0F2FE;
-    border-color: #2563EB;
-    color: #1E3A8A;
+    background-color: #34D399;
+    color: #FFFFFF;
+    border-color: #059669;
+    box-shadow: 0 3px 6px rgba(5,150,105,0.3);
   }
 
   .materia.bloqueada {
-    background-color: #F3F4F6;
+    background-color: #E5E7EB;
     color: #9CA3AF;
-    border-color: #E5E7EB;
+    border-color: #D1D5DB;
     cursor: not-allowed;
   }
 
-  /* Tooltip tipo burbuja */
+  /* Tooltip tipo burbuja animado */
   .tooltip {
     position: absolute;
-    top: -40px;
+    top: -48px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.8);
     background-color: #1E3A8A;
     color: #FFFFFF;
     padding: 6px 10px;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 20;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   }
 
   .tooltip::after {
@@ -138,19 +164,35 @@
 
   .materia.bloqueada:hover .tooltip {
     opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* Scrollbar estilizado */
+  ::-webkit-scrollbar {
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2563EB;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #BFDBFE;
   }
 </style>
 </head>
 <body>
-<h1>Malla Curricular - Arquitectura</h1>
+<header>FACULTAD DE ARQUITECTURA - UNIVERSIDAD DE PANAMÁ</header>
+<h1>MALLA CURRICULAR - ARQUITECTURA</h1>
 <div class="malla" id="malla"></div>
 
 <script>
+const numeros = ["1° SEMESTRE", "2° SEMESTRE", "VERANO"];
+
 const mallaData = [
   {
-    nombre: "Primer Año",
+    nombre: "PRIMER AÑO",
     semestres: [
-      { nombre: "Primer Semestre", materias: [
+      { nombre: numeros[0], materias: [
         {nombre:"Matemática Aplicada"},
         {nombre:"Introducción a la Edificación"},
         {nombre:"Composición Arquitectónica 1"},
@@ -159,7 +201,7 @@ const mallaData = [
         {nombre:"Representación Arquitectónica 1"},
         {nombre:"Diseño Arquitectónico 1"}
       ]},
-      { nombre: "Segundo Semestre", materias: [
+      { nombre: numeros[1], materias: [
         {nombre:"Física Aplicada"},
         {nombre:"Geografía de Panamá"},
         {nombre:"Diseño Arquitectónico 2", prerequisitos:["Diseño Arquitectónico 1"]},
@@ -168,16 +210,16 @@ const mallaData = [
         {nombre:"Arte: Moderno y Contemporáneo", prerequisitos:["Arte: Antigüedad a S. XVIII"]},
         {nombre:"Representación Arquitectónica 2", prerequisitos:["Representación Arquitectónica 1"]}
       ]},
-      { nombre: "Verano", materias: [
+      { nombre: numeros[2], materias: [
         {nombre:"Taller de Diseño Arquitectónico 1", prerequisitos:["Diseño Arquitectónico 2"]},
         {nombre:"Representación Arquitectónica 1 (continuación práctica)"}
       ]}
     ]
   },
   {
-    nombre: "Segundo Año",
+    nombre: "SEGUNDO AÑO",
     semestres: [
-      { nombre: "Primer Semestre", materias: [
+      { nombre: numeros[0], materias: [
         {nombre:"Dibujo Manual y Digital"},
         {nombre:"Topografía"},
         {nombre:"Taller de Diseño Arquitectónico 1 (equivalente)"},
@@ -185,14 +227,14 @@ const mallaData = [
         {nombre:"Tecnología del Hormigón Armado"},
         {nombre:"Representación Arquitectónica 3", prerequisitos:["Representación Arquitectónica 2"]}
       ]},
-      { nombre: "Segundo Semestre", materias: [
+      { nombre: numeros[1], materias: [
         {nombre:"Diseño Arquitectónico 3", prerequisitos:["Diseño Arquitectónico 2","Taller de Diseño Arquitectónico 1"]},
         {nombre:"Interpretación de la Arquitectura", prerequisitos:["Introducción a la Teoría"]},
         {nombre:"Tecnología del Hormigón Armado (continuación)"},
         {nombre:"Taller de Diseño Arquitectónico 2", prerequisitos:["Taller de Diseño Arquitectónico 1"]},
         {nombre:"Análisis Estructural", prerequisitos:["Modelos Estructurales"]}
       ]},
-      { nombre: "Verano", materias: [
+      { nombre: numeros[2], materias: [
         {nombre:"Sistemas Constructivos Especiales", prerequisitos:["Tecnología del Hormigón Armado"]},
         {nombre:"Taller de Diseño Arquitectónico 2 (continuación)"},
         {nombre:"Electiva 1"}
@@ -200,23 +242,23 @@ const mallaData = [
     ]
   },
   {
-    nombre: "Tercer Año",
+    nombre: "TERCER AÑO",
     semestres: [
-      { nombre: "Primer Semestre", materias: [
+      { nombre: numeros[0], materias: [
         {nombre:"Diseño Arquitectónico 4", prerequisitos:["Diseño Arquitectónico 3","Interpretación de la Arquitectura"]},
         {nombre:"Textos y Contextos de la Arquitectura Latinoamericana", prerequisitos:["Interpretación de la Arquitectura"]},
         {nombre:"Representación Arquitectónica 4", prerequisitos:["Representación Arquitectónica 3"]},
         {nombre:"Instalaciones para Edificio 1"},
         {nombre:"Sociedad, Medio Ambiente y Desarrollo", prerequisitos:["Diseño Arquitectónico 3"]}
       ]},
-      { nombre: "Segundo Semestre", materias: [
+      { nombre: numeros[1], materias: [
         {nombre:"Diseño Arquitectónico 5", prerequisitos:["Diseño Arquitectónico 4"]},
         {nombre:"Arquitectura y Ciudad 1"},
         {nombre:"Instalaciones para Edificio 2", prerequisitos:["Instalaciones para Edificio 1"]},
         {nombre:"Sistemas Constructivos Complejos", prerequisitos:["Sistemas Constructivos Especiales"]},
         {nombre:"Crítica de la Arquitectura y Pensamiento Contemporáneo", prerequisitos:["Textos y Contextos de la Arquitectura Latinoamericana"]}
       ]},
-      { nombre: "Verano", materias: [
+      { nombre: numeros[2], materias: [
         {nombre:"Taller de Diseño Arquitectónico 3", prerequisitos:["Taller de Diseño Arquitectónico 2","Sistemas Constructivos Complejos"]},
         {nombre:"Práctica Supervisada 1"},
         {nombre:"Optativa 1"}
@@ -224,23 +266,23 @@ const mallaData = [
     ]
   },
   {
-    nombre: "Cuarto Año",
+    nombre: "CUARTO AÑO",
     semestres: [
-      { nombre: "Primer Semestre", materias: [
+      { nombre: numeros[0], materias: [
         {nombre:"Diseño Arquitectónico 7", prerequisitos:["Diseño Arquitectónico 6"]},
         {nombre:"Diseño Estructural Simplificado", prerequisitos:["Análisis Estructural","Sistemas Constructivos Complejos"]},
         {nombre:"Instalaciones para Edificio 3", prerequisitos:["Instalaciones para Edificio 2"]},
         {nombre:"Arquitectura y Ciudad 2", prerequisitos:["Arquitectura y Ciudad 1"]},
         {nombre:"Taller de Planos y Especificaciones", prerequisitos:["Introducción a la Investigación"]}
       ]},
-      { nombre: "Segundo Semestre", materias: [
+      { nombre: numeros[1], materias: [
         {nombre:"Diseño Arquitectónico 8", prerequisitos:["Diseño Arquitectónico 7"]},
         {nombre:"Instalaciones para Edificios 4", prerequisitos:["Instalaciones para Edificio 3"]},
         {nombre:"Estructuras Especiales", prerequisitos:["Diseño Estructural Simplificado"]},
         {nombre:"Arquitectura y Ciudad 3", prerequisitos:["Arquitectura y Ciudad 2"]},
         {nombre:"Programación y Control de Proyectos", prerequisitos:["Taller de Planos y Especificaciones"]}
       ]},
-      { nombre: "Verano", materias: [
+      { nombre: numeros[2], materias: [
         {nombre:"Taller de Urbanismo", prerequisitos:["Diseño Arquitectónico 8","Espacios Abiertos Urbanos"]},
         {nombre:"Práctica Supervisada 2"},
         {nombre:"Optativa 2"}
@@ -248,16 +290,16 @@ const mallaData = [
     ]
   },
   {
-    nombre: "Quinto Año",
+    nombre: "QUINTO AÑO",
     semestres: [
-      { nombre: "Primer Semestre", materias: [
+      { nombre: numeros[0], materias: [
         {nombre:"Diseño Arquitectónico 9", prerequisitos:["Diseño Arquitectónico 8"]},
         {nombre:"Arquitectura y Ciudad 4", prerequisitos:["Arquitectura y Ciudad 3"]},
         {nombre:"Gestión Profesional", prerequisitos:["Diseño Arquitectónico 8","Práctica Supervisada 2"]},
         {nombre:"Ciudad y Territorio", prerequisitos:["Taller de Urbanismo"]},
         {nombre:"Trabajo de Graduación 1", prerequisitos:["Todo Cuarto Año aprobado"]}
       ]},
-      { nombre: "Segundo Semestre", materias: [
+      { nombre: numeros[1], materias: [
         {nombre:"Diseño Arquitectónico 10", prerequisitos:["Diseño Arquitectónico 9"]},
         {nombre:"Gestión Urbana y Territorial", prerequisitos:["Ciudad y Territorio","Gestión Profesional"]},
         {nombre:"Patrimonio Arquitectónico", prerequisitos:["Arquitectura y Ciudad 4"]},
