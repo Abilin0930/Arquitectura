@@ -18,7 +18,30 @@
     text-transform: uppercase;
     color: #5b6f43;
     font-size: 2em;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+  }
+
+  .acciones {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  button {
+    background-color: #a4b98d;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 25px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: #6b8e23;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(107,142,35,0.4);
   }
 
   .malla {
@@ -85,7 +108,7 @@
     cursor: not-allowed;
   }
 
-  /* Tooltip */
+  /* Tooltip estilo burbuja */
   .materia.bloqueada:hover::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -113,129 +136,150 @@
 </head>
 <body>
 <h1>MALLA CURRICULAR ARQUITECTURA</h1>
+
+<div class="acciones">
+  <button id="reset">Reiniciar progreso</button>
+</div>
+
 <div class="malla" id="malla"></div>
 
 <script>
 const materias = [
-  {
-    año: 1,
-    semestres: [
-      { nombre: "1° semestre", materias: [
-        {nombre: "Matemática Aplicada"},
-        {nombre: "Introducción a la Edificación"},
-        {nombre: "Composición Arquitectónica 1"},
-        {nombre: "Introducción a la Teoría"},
-        {nombre: "Arte: Antigüedad a S. XVIII"},
-        {nombre: "Representación Arquitectónica 1"},
-        {nombre: "Diseño Arquitectónico 1"}
-      ]},
-      { nombre: "2° semestre", materias: [
-        {nombre: "Física Aplicada"},
-        {nombre: "Geografía de Panamá"},
-        {nombre: "Diseño Arquitectónico 2", prereq: ["Diseño Arquitectónico 1"]},
-        {nombre: "Composición Arquitectónica 2", prereq: ["Composición Arquitectónica 1"]},
-        {nombre: "Sistemas Constructivos Básicos", prereq: ["Introducción a la Edificación"]},
-        {nombre: "Arte: Moderno y Contemporáneo", prereq: ["Arte: Antigüedad a S. XVIII"]},
-        {nombre: "Representación Arquitectónica 2", prereq: ["Representación Arquitectónica 1"]}
-      ]},
-      { nombre: "Verano", materias: [
-        {nombre: "Taller de Diseño Arquitectónico 1", prereq: ["Diseño Arquitectónico 2"]},
-        {nombre: "Representación Arquitectónica 1 (continuación práctica)"}
-      ]}
-    ]
-  },
-  {
-    año: 2,
-    semestres: [
-      { nombre: "1° semestre", materias: [
-        {nombre: "Dibujo Manual y Digital"},
-        {nombre: "Topografía"},
-        {nombre: "Taller de Diseño Arquitectónico 1 (equivalente)"},
-        {nombre: "Sistemas Constructivos Básicos (continuación)"},
-        {nombre: "Tecnología del Hormigón Armado"},
-        {nombre: "Representación Arquitectónica 3", prereq: ["Representación Arquitectónica 2"]}
-      ]},
-      { nombre: "2° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 3", prereq: ["Diseño Arquitectónico 2", "Taller de Diseño Arquitectónico 1"]},
-        {nombre: "Interpretación de la Arquitectura", prereq: ["Introducción a la Teoría"]},
-        {nombre: "Tecnología del Hormigón Armado (continuación)"},
-        {nombre: "Taller de Diseño Arquitectónico 2", prereq: ["Taller de Diseño Arquitectónico 1"]},
-        {nombre: "Análisis Estructural", prereq: ["Modelos Estructurales"]}
-      ]},
-      { nombre: "Verano", materias: [
-        {nombre: "Sistemas Constructivos Especiales", prereq: ["Tecnología del Hormigón Armado"]},
-        {nombre: "Taller de Diseño Arquitectónico 2 (continuación)"},
-        {nombre: "Electiva 1"}
-      ]}
-    ]
-  },
-  {
-    año: 3,
-    semestres: [
-      { nombre: "1° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 4", prereq: ["Diseño Arquitectónico 3", "Interpretación de la Arquitectura"]},
-        {nombre: "Textos y Contextos de la Arquitectura Latinoamericana", prereq: ["Interpretación de la Arquitectura"]},
-        {nombre: "Representación Arquitectónica 4", prereq: ["Representación Arquitectónica 3"]},
-        {nombre: "Instalaciones para Edificio 1"},
-        {nombre: "Sociedad, Medio Ambiente y Desarrollo", prereq: ["Diseño Arquitectónico 3"]}
-      ]},
-      { nombre: "2° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 5", prereq: ["Diseño Arquitectónico 4"]},
-        {nombre: "Arquitectura y Ciudad 1"},
-        {nombre: "Instalaciones para Edificio 2", prereq: ["Instalaciones para Edificio 1"]},
-        {nombre: "Sistemas Constructivos Complejos", prereq: ["Sistemas Constructivos Especiales"]},
-        {nombre: "Crítica de la Arquitectura y Pensamiento Contemporáneo", prereq: ["Textos y Contextos de la Arquitectura Latinoamericana"]}
-      ]},
-      { nombre: "Verano", materias: [
-        {nombre: "Taller de Diseño Arquitectónico 3", prereq: ["Taller de Diseño Arquitectónico 2", "Sistemas Constructivos Complejos"]},
-        {nombre: "Práctica Supervisada 1"},
-        {nombre: "Optativa 1"}
-      ]}
-    ]
-  },
-  {
-    año: 4,
-    semestres: [
-      { nombre: "1° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 7", prereq: ["Diseño Arquitectónico 6"]},
-        {nombre: "Diseño Estructural Simplificado", prereq: ["Análisis Estructural", "Sistemas Constructivos Complejos"]},
-        {nombre: "Instalaciones para Edificio 3", prereq: ["Instalaciones para Edificio 2"]},
-        {nombre: "Arquitectura y Ciudad 2", prereq: ["Arquitectura y Ciudad 1"]},
-        {nombre: "Taller de Planos y Especificaciones", prereq: ["Introducción a la Investigación"]}
-      ]},
-      { nombre: "2° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 8", prereq: ["Diseño Arquitectónico 7"]},
-        {nombre: "Instalaciones para Edificios 4", prereq: ["Instalaciones para Edificio 3"]},
-        {nombre: "Estructuras Especiales", prereq: ["Diseño Estructural Simplificado"]},
-        {nombre: "Arquitectura y Ciudad 3", prereq: ["Arquitectura y Ciudad 2"]},
-        {nombre: "Programación y Control de Proyectos", prereq: ["Taller de Planos y Especificaciones"]}
-      ]},
-      { nombre: "Verano", materias: [
-        {nombre: "Taller de Urbanismo", prereq: ["Diseño Arquitectónico 8", "Espacios Abiertos Urbanos"]},
-        {nombre: "Práctica Supervisada 2"},
-        {nombre: "Optativa 2"}
-      ]}
-    ]
-  },
-  {
-    año: 5,
-    semestres: [
-      { nombre: "1° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 9", prereq: ["Diseño Arquitectónico 8"]},
-        {nombre: "Arquitectura y Ciudad 4", prereq: ["Arquitectura y Ciudad 3"]},
-        {nombre: "Gestión Profesional", prereq: ["Diseño Arquitectónico 8", "Práctica Supervisada 2"]},
-        {nombre: "Ciudad y Territorio", prereq: ["Taller de Urbanismo"]},
-        {nombre: "Trabajo de Graduación 1", prereq: ["Todo Cuarto Año aprobado"]}
-      ]},
-      { nombre: "2° semestre", materias: [
-        {nombre: "Diseño Arquitectónico 10", prereq: ["Diseño Arquitectónico 9"]},
-        {nombre: "Gestión Urbana y Territorial", prereq: ["Ciudad y Territorio", "Gestión Profesional"]},
-        {nombre: "Patrimonio Arquitectónico", prereq: ["Arquitectura y Ciudad 4"]},
-        {nombre: "Práctica Supervisada 3", prereq: ["Práctica Supervisada 2"]},
-        {nombre: "Trabajo de Graduación 2", prereq: ["Trabajo de Graduación 1"]}
-      ]}
-    ]
-  }
+{
+año: 1,
+semestres: [
+{ nombre: "1° semestre", materias: [
+{nombre: "Diseño Arquitectónico 1"},
+{nombre: "Composición Arquitectónica 1"},
+{nombre: "Introducción A La Teoría"},
+{nombre: "Arte: Antigüedad A S. XVIII"},
+{nombre: "Representación Arquitectónica 1"},
+{nombre: "Introducción A La Edificación"},
+{nombre: "Matemática Aplicada"}
+]},
+{ nombre: "2° semestre", materias: [
+{nombre: "Física Aplicada", prereq: ["Matemática Aplicada"]},
+{nombre: "Diseño Arquitectónico 2", prereq: ["Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría","Representación Arquitectónica 1","Introducción A La Edificación"]},
+{nombre: "Composición Arquitectónica 2", prereq: ["Composición Arquitectónica 1","Diseño Arquitectónico 1"]},
+{nombre: "Sistemas Constructivos Básicos", prereq: ["Introducción A La Edificación"]},
+{nombre: "Arte: Moderno Y Contemporáneo", prereq: ["Arte: Antigüedad A S. XVIII"]},
+{nombre: "Topografía", prereq: ["Introducción A La Edificación","Matemática Aplicada"]},
+{nombre: "Dibujo A Mano Alzada"}
+]},
+{ nombre: "Verano", materias: [
+{nombre: "Taller De Diseño Arquitectónico 1", prereq: ["Representación Arquitectónica 1","Diseño Arquitectónico 2"]},
+{nombre: "Taller De Visualización"},
+{nombre: "Geomática"}
+]}
+]
+},
+{
+año: 2,
+semestres: [
+{ nombre: "1° semestre", materias: [
+{nombre: "Español"},
+{nombre: "Diseño Arquitectónico 3", prereq: ["Introducción A La Teoría","Diseño Arquitectónico 2","Composición Arquitectónica 2","Sistemas Constructivos Básicos","Topografía","Taller De Diseño Arquitectónico 1"]},
+{nombre: "Interpretación De La Arquitectura", prereq: ["Introducción A La Teoría"]},
+{nombre: "Representación Arquitectónica 2", prereq: ["Representación Arquitectónica 1"]},
+{nombre: "Tecnología Del Hormigón Armado", prereq: ["Introducción A La Edificación","Sistemas Constructivos Básicos"]},
+{nombre: "Modelos Estructurales", prereq: ["Física Aplicada"]},
+{nombre: "Introducción A La Investigación"}
+]},
+{ nombre: "2° semestre", materias: [
+{nombre: "Inglés"},
+{nombre: "Sociedad Medio Ambiente Y Des.", prereq: ["Diseño Arquitectónico 3","Introducción A La Edificación"]},
+{nombre: "Diseño Arquitectónico 4", prereq: ["Diseño Arquitectónico 3","Interpretación De La Arquitectura","Representación Arquitectónica 2","Tecnología Del Hormigón Armado"]},
+{nombre: "Textos Y Contextos De La Arq. Latinoamericana", prereq: ["Interpretación De La Arquitectura"]},
+{nombre: "Representación Arquitectónica 3", prereq: ["Representación Arquitectónica 2"]},
+{nombre: "Sistemas Constructivos Especiales", prereq: ["Tecnología Del Hormigón Armado"]},
+{nombre: "Análisis Estructural", prereq: ["Tecnología Del Hormigón Armado"]}
+]},
+{ nombre: "Verano", materias: [
+{nombre: "Taller De Diseño Arquitectónico 2", prereq: ["Taller De Diseño Arquitectónico 1","Diseño Arquitectónico 4","Representación Arquitectónica 3","Sistemas Constructivos Especiales"]},
+{nombre: "Electiva 1"},
+{nombre: "Electiva 2"}
+]}
+]
+},
+{
+año: 3,
+semestres: [
+{ nombre: "1° semestre", materias: [
+{nombre: "Historia De Pma En El Mundo Global"},
+{nombre: "Diseño Arquitectónico 5", prereq: ["Diseño Arquitectónico 4","Textos Y Contextos De La Arq. Latinoamericana","Representación Arquitectónica 3","Sistemas Constructivos Especiales","Taller De Diseño Arquitectónico 2"]},
+{nombre: "Crítica De La Arquitectura Y Pensamiento Contemporáneo", prereq: ["Textos Y Contextos De La Arq. Latinoamericana"]},
+{nombre: "Representación Arquitectónica 4", prereq: ["Representación Arquitectónica 3"]},
+{nombre: "Sistemas Constructivos Complejos", prereq: ["Sistemas Constructivos Especiales"]},
+{nombre: "Instalaciones Para Edificio 1", prereq: ["Física Aplicada"]},
+{nombre: "Espacios Abiertos Vecinales", prereq: ["Sociedad Medio Ambiente Y Des.","Topografía","Introducción A La Investigación","Diseño Arquitectónico 4"]}
+]},
+{ nombre: "2° semestre", materias: [
+{nombre: "Geografía De Panamá"},
+{nombre: "Diseño Arquitectónico 6", prereq: ["Diseño Arquitectónico 5","Crítica De La Arquitectura Y Pensamiento Contemporáneo","Representación Arquitectónica 4","Sistemas Constructivos Complejos","Instalaciones Para Edificio 1"]},
+{nombre: "Arquitectura Y Ciudad 1", prereq: ["Arte: Moderno Y Contemporáneo"]},
+{nombre: "Representación Arquitectónica 5", prereq: ["Representación Arquitectónica 4"]},
+{nombre: "Gestión De Seguridad Y Salud Ocupacional", prereq: ["Sistemas Constructivos Complejos"]},
+{nombre: "Instalaciones Para Edificio 2", prereq: ["Instalaciones Para Edificio 1"]},
+{nombre: "Ciudad Y Comunidad", prereq: ["Diseño Arquitectónico 5","Espacios Abiertos Vecinales"]}
+]},
+{ nombre: "Verano", materias: [
+{nombre: "Taller De Diseño Arquitectónico 3", prereq: ["Taller De Diseño Arquitectónico 2","Sistemas Constructivos Complejos","Diseño Arquitectónico 5","Representación Arquitectónica 5","Práctica Supervisada 1"]},
+{nombre: "Práctica Supervisada 1", prereq: ["Gestión De Seguridad Y Salud Ocupacional"]},
+{nombre: "Optativa 1"}
+]}
+]
+},
+{
+año: 4,
+semestres: [
+{ nombre: "1° semestre", materias: [
+{nombre: "Diseño Arquitectónico 7", prereq: ["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
+{nombre: "Arquitectura Y Ciudad 2", prereq: ["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
+{nombre: "Representación Arquitectónica 6", prereq: ["Representación Arquitectónica 5"]},
+{nombre: "Taller De Planos Y Especificaciones", prereq: ["Introducción A La Investigación"]},
+{nombre: "Diseño Estructural Simplificado", prereq: ["Análisis Estructural","Sistemas Constructivos Complejos"]},
+{nombre: "Instalaciones Para Edificio 3", prereq: ["Instalaciones Para Edificio 2"]},
+{nombre: "Urbanismo", prereq: ["Geomática","Diseño Arquitectónico 6","Ciudad Y Comunidad"]}
+]},
+{ nombre: "2° semestre", materias: [
+{nombre: "Diseño Arquitectónico 8", prereq: ["Diseño Arquitectónico 7","Representación Arquitectónica 6","Diseño Estructural Simplificado","Instalaciones Para Edificio 3"]},
+{nombre: "Arquitectura Y Ciudad 3", prereq: ["Arquitectura Y Ciudad 2"]},
+{nombre: "Presupuesto De Obra", prereq: ["Sistemas Constructivos Complejos","Taller De Planos Y Especificaciones"]},
+{nombre: "Estructuras Especiales", prereq: ["Diseño Estructural Simplificado"]},
+{nombre: "Instalaciones Para Edificios 4", prereq: ["Instalaciones Para Edificio 3"]},
+{nombre: "Espacios Abiertos Urbanos", prereq: ["Diseño Arquitectónico 7","Urbanismo"]},
+{nombre: "Metodología Para La Elab. De Tesis", prereq: ["Diseño Arquitectónico 7","Arquitectura Y Ciudad 2","Representación Arquitectónica 6","Taller De Planos Y Especificaciones","Diseño Estructural Simplificado","Instalaciones Para Edificio 3","Urbanismo"]}
+]},
+{ nombre: "Verano", materias: [
+{nombre: "Taller De Urbanismo", prereq: ["Diseño Arquitectónico 8","Espacios Abiertos Urbanos"]},
+{nombre: "Práctica Supervisada 2", prereq: ["Práctica Supervisada 1"]},
+{nombre: "Optativa 2"}
+]}
+]
+},
+{
+año: 5,
+semestres: [
+{ nombre: "1° semestre", materias: [
+{nombre: "Hist. De Las Relaciones De Pma Con Los EE.UU. I"},
+{nombre: "Diseño Arquitectónico 9", prereq: ["Diseño Arquitectónico 8","Estructuras Especiales","Instalaciones Para Edificios 4"]},
+{nombre: "Arquitectura Y Ciudad 4", prereq: ["Arquitectura Y Ciudad 3"]},
+{nombre: "Programación Y Control De PYT", prereq: ["Taller De Planos Y Especificaciones","Presupuesto De Obra"]},
+{nombre: "Gestión Profesional", prereq: ["Diseño Arquitectónico 8","Práctica Supervisada 2"]},
+{nombre: "Ciudad Y Territorio", prereq: ["Taller De Urbanismo"]},
+{nombre: "Trabajo De Graduación 1", prereq: ["Todo Cuarto Año Terminado"]}
+]},
+{ nombre: "2° semestre", materias: [
+{nombre: "Hist. De Las Relaciones De Pma Con Los EE.UU. II"},
+{nombre: "Diseño Arquitectónico 10", prereq: ["Diseño Arquitectónico 9"]},
+{nombre: "Patrimonio Arquitectónico", prereq: ["Arquitectura Y Ciudad 4"]},
+{nombre: "Gestión Y Mantenimiento De Edificios", prereq: ["Práctica Supervisada 2","Programación Y Control De PYT"]},
+{nombre: "Práctica Supervisada 3", prereq: ["Representación Arquitectónica 6","Práctica Supervisada 2","Diseño Arquitectónico 9","Programación Y Control De PYT","Gestión Profesional","Ciudad Y Territorio"]},
+{nombre: "Gestión Urbana Y Territorial", prereq: ["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
+{nombre: "Trabajo De Graduación 2", prereq: ["Trabajo De Graduación 1"]}
+]}
+]
+}
 ];
 
 function cargarMalla() {
@@ -283,8 +327,14 @@ function cargarMalla() {
   });
 }
 
+document.getElementById('reset').addEventListener('click', () => {
+  if(confirm("¿Seguro que quieres borrar todo el progreso?")) {
+    localStorage.clear();
+    cargarMalla();
+  }
+});
+
 cargarMalla();
 </script>
 </body>
 </html>
-
