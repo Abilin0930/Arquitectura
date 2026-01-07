@@ -1,42 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
 <title>Malla Curricular Arquitectura</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Firebase SDK (compat — más simple) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
-  authDomain: "malla-curricular-arquitectura.firebaseapp.com",
-  projectId: "malla-curricular-arquitectura",
-  storageBucket: "malla-curricular-arquitectura.appspot.com",
-  messagingSenderId: "613677284410",
-  appId: "1:613677284410:web:3c0d68721e74f054378903"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-</script>
-
 <style>
-/* ---- TU CSS IGUAL ---- */
+body{
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+  background:#f4f7ef;
+  padding:30px;
+  color:#2f3a1f;
+}
+h1{
+  text-align:center;
+  color:#6f8440;
+  letter-spacing:3px;
+}
+.progreso-box{
+  max-width:900px;
+  margin:20px auto;
+  text-align:center;
+}
+#mensaje{
+  margin-top:10px;
+  font-size:0.9em;
+  color:#6f8440;
+}
+.progreso-barra{
+  background:#dde6d3;
+  border-radius:20px;
+  overflow:hidden;
+  height:18px;
+}
+.progreso-barra div{
+  background:#8fa86b;
+  height:100%;
+  width:0%;
+  transition:0.5s;
+}
+button{
+  margin-top:15px;
+  background:#8fa86b;
+  color:white;
+  border:none;
+  padding:10px 25px;
+  border-radius:25px;
+  cursor:pointer;
+}
+button:hover{background:#6f8440}
+
+.malla{
+  display:flex;
+  gap:25px;
+  overflow-x:auto;
+  padding-top:30px;
+}
+.ano{
+  background:#eef3e7;
+  border-radius:20px;
+  padding:20px;
+  min-width:300px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+.ano h2{
+  text-align:center;
+  color:#6f8440;
+  border-bottom:2px solid #b7c8a0;
+  padding-bottom:8px;
+}
+.semestre h3{
+  background:#dce7cb;
+  text-align:center;
+  border-radius:15px;
+  padding:6px;
+  margin-top:15px;
+}
+.materia{
+  background:#ffffff;
+  border-radius:12px;
+  padding:8px;
+  margin:6px 0;
+  text-align:center;
+  cursor:pointer;
+  position:relative;
+  font-size:0.85em;
+}
+.materia.aprobada{
+  background:#8fa86b;
+  color:white;
+  text-decoration:line-through;
+}
+.materia.bloqueada{
+  background:#e0e0e0;
+  color:#9a9a9a;
+  cursor:not-allowed;
+}
+.materia.bloqueada:hover::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  bottom:120%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#6f8440;
+  color:white;
+  padding:6px 10px;
+  border-radius:10px;
+  font-size:0.7em;
+  white-space:nowrap;
+}
 </style>
 </head>
 
 <body>
-
-<div id="auth">
-  <button onclick="loginGoogle()">Iniciar sesión con Google</button>
-  <button onclick="logout()">Cerrar sesión</button>
-</div>
 
 <h1>MALLA CURRICULAR ARQUITECTURA</h1>
 
@@ -50,32 +126,16 @@ const db = firebase.firestore();
 <div class="malla" id="malla"></div>
 
 <script>
-let usuario = null;
-
-auth.onAuthStateChanged(u => {
-  usuario = u;
-  render();
-});
-
-function loginGoogle(){
-  const provider=new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-}
-
-function logout(){
-  auth.signOut();
-}
-
 const mensajes = [
- {p:0,m:"Todo gran proyecto empieza con una idea 🌱"},
- {p:10,m:"Vas tomando forma, sigue así ✏️"},
- {p:25,m:"Ya estás construyendo bases sólidas 🧱"},
- {p:50,m:"Mitad del camino, tu esfuerzo se nota 💚"},
- {p:75,m:"Casi arquitecta/o, no te detengas 🏗️"},
- {p:90,m:"Estás muy cerca del sueño ✨"},
- {p:100,m:"¡LO LOGRASTE! Manos A La Obra 🎓"}
+ {p:0, m:"Todo gran proyecto empieza con una idea 🌱"},
+ {p:10, m:"Vas tomando forma, sigue así ✏️"},
+ {p:25, m:"Ya estás construyendo bases sólidas 🧱"},
+ {p:50, m:"Mitad del camino, tu esfuerzo se nota 💚"},
+ {p:75, m:"Casi arquitecta, no te detengas 🏗️"},
+ {p:90, m:"Estás muy cerca del sueño ✨"},
+ {p:100, m:"¡LO LOGRASTE! Arquitecta en proceso 🎓"}
 ];
-  
+
 const data = [
 {año:"AÑO 1", semestres:[
 {nombre:"1° SEMESTRE", materias:[
@@ -173,177 +233,83 @@ const data = [
 {n:"Gestión Urbana Y Territorial",p:["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
 {n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}]}]}];
 
-async function render(){
-
+function render(){
 const m=document.getElementById("malla");
 m.innerHTML="";
 let total=0,ok=0;
-
-let materiasAprobadas={};
-
-if(usuario){
- const snap = await db.collection("usuarios")
-   .doc(usuario.uid)
-   .collection("materias")
-   .get();
-
- snap.forEach(d=>materiasAprobadas[d.id]=true);
-}
 
 data.forEach(a=>{
  const d=document.createElement("div");
  d.className="ano";
  d.innerHTML=`<h2>${a.año}</h2>`;
-
  a.semestres.forEach(s=>{
   const sd=document.createElement("div");
   sd.className="semestre";
   sd.innerHTML=`<h3>${s.nombre}</h3>`;
-
   s.materias.forEach(x=>{
    total++;
-
    let nombre=typeof x==="string"?x:x.n;
    let p=typeof x==="string"?[]:x.p;
-
    const div=document.createElement("div");
    div.className="materia";
    div.textContent=nombre;
-
-   const aprobado = materiasAprobadas[nombre];
-   if(aprobado){div.classList.add("aprobada");ok++;}
-
-   const faltan = p.filter(r=>!materiasAprobadas[r]);
+   const aprobado=localStorage.getItem(nombre);
+   if(aprobado){div.classList.add("aprobada");ok++}
+   const faltan=p.filter(r=>!localStorage.getItem(r));
    if(faltan.length){
-     div.classList.add("bloqueada");
-     div.dataset.tooltip="Falta: "+faltan.join(", ");
+    div.classList.add("bloqueada");
+    div.dataset.tooltip="Falta: "+faltan.join(", ");
    }
-
-   div.onclick=async ()=>{
-     if(!usuario) return alert("Inicia sesión 💚");
-     if(faltan.length) return;
-
-     if(aprobado){
-       await db.collection("usuarios").doc(usuario.uid)
-        .collection("materias").doc(nombre).delete();
-     } else {
-       await db.collection("usuarios").doc(usuario.uid)
-        .collection("materias").doc(nombre).set({ok:true});
-     }
-
-     render();
+   div.onclick=()=>{
+    if(div.classList.contains("bloqueada"))return;
+    aprobado?localStorage.removeItem(nombre):localStorage.setItem(nombre,"ok");
+    render();
    };
-
    sd.appendChild(div);
   });
-
   d.appendChild(sd);
  });
-
  m.appendChild(d);
 });
 
 const pct=Math.round(ok/total*100);
 document.getElementById("barra").style.width=pct+"%";
 document.getElementById("porcentaje").textContent="Progreso: "+pct+"%";
-
 let msg=mensajes[0].m;
 mensajes.forEach(x=>{if(pct>=x.p)msg=x.m});
 document.getElementById("mensaje").textContent=msg;
-
-}
-
-const m=document.getElementById("malla");
-m.innerHTML="";
-let total=0,ok=0;
-
-let materiasAprobadas={};
-
-if(usuario){
- const snap = await db.collection("usuarios")
-   .doc(usuario.uid)
-   .collection("materias")
-   .get();
-
- snap.forEach(d=>materiasAprobadas[d.id]=true);
-}
-
-data.forEach(a=>{
- const d=document.createElement("div");
- d.className="ano";
- d.innerHTML=`<h2>${a.año}</h2>`;
-
- a.semestres.forEach(s=>{
-  const sd=document.createElement("div");
-  sd.className="semestre";
-  sd.innerHTML=`<h3>${s.nombre}</h3>`;
-
-  s.materias.forEach(x=>{
-   total++;
-
-   let nombre=typeof x==="string"?x:x.n;
-   let p=typeof x==="string"?[]:x.p;
-
-   const div=document.createElement("div");
-   div.className="materia";
-   div.textContent=nombre;
-
-   const aprobado = materiasAprobadas[nombre];
-   if(aprobado){div.classList.add("aprobada");ok++;}
-
-   const faltan = p.filter(r=>!materiasAprobadas[r]);
-   if(faltan.length){
-     div.classList.add("bloqueada");
-     div.dataset.tooltip="Falta: "+faltan.join(", ");
-   }
-
-   div.onclick=async ()=>{
-     if(!usuario) return alert("Inicia sesión 💚");
-     if(faltan.length) return;
-
-     if(aprobado){
-       await db.collection("usuarios").doc(usuario.uid)
-        .collection("materias").doc(nombre).delete();
-     } else {
-       await db.collection("usuarios").doc(usuario.uid)
-        .collection("materias").doc(nombre).set({ok:true});
-     }
-
-     render();
-   };
-
-   sd.appendChild(div);
-  });
-
-  d.appendChild(sd);
- });
-
- m.appendChild(d);
-});
-
-const pct=Math.round(ok/total*100);
-document.getElementById("barra").style.width=pct+"%";
-document.getElementById("porcentaje").textContent="Progreso: "+pct+"%";
-
-let msg=mensajes[0].m;
-mensajes.forEach(x=>{if(pct>=x.p)msg=x.m});
-document.getElementById("mensaje").textContent=msg;
-
 }
 
 function reiniciar(){
- if(!usuario)return alert("Inicia sesión");
- if(confirm("¿Borrar progreso?")){
-  db.collection("usuarios").doc(usuario.uid).collection("materias")
-  .get().then(snap=>{
-    snap.forEach(d=>d.ref.delete());
-    render();
-  });
+ if(confirm("¿Borrar todo el progreso?")){
+  localStorage.clear();
+  render();
  }
 }
-
 render();
 </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
+    authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+    projectId: "malla-curricular-arquitectura",
+    storageBucket: "malla-curricular-arquitectura.firebasestorage.app",
+    messagingSenderId: "613677284410",
+    appId: "1:613677284410:web:92297cf4c86a6f6c378903",
+    measurementId: "G-YN189BKMCH"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
