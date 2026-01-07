@@ -114,6 +114,11 @@ button:hover{background:#6f8440}
 
 <body>
 
+<div id="auth">
+  <button onclick="loginGoogle()">Iniciar sesión con Google</button>
+  <button onclick="logout()">Cerrar sesión</button>
+</div>
+
 <h1>MALLA CURRICULAR ARQUITECTURA</h1>
 
 <div class="progreso-box">
@@ -310,6 +315,78 @@ render();
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+</script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+    projectId: "malla-curricular-arquitectura",
+    storageBucket: "malla-curricular-arquitectura.appspot.com",
+    messagingSenderId: "TU_SENDER_ID",
+    appId: "TU_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  window.loginGoogle = async () => {
+    await signInWithPopup(auth, provider);
+  };
+
+  window.logout = async () => {
+    await signOut(auth);
+  };
+
+  window.onAuthStateChanged = onAuthStateChanged;
+  window.db = db;
+  window.doc = doc;
+  window.setDoc = setDoc;
+  window.getDoc = getDoc;
+</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+  projectId: "malla-curricular-arquitectura",
+  storageBucket: "malla-curricular-arquitectura.appspot.com",
+  messagingSenderId: "TU_MESSAGING_ID",
+  appId: "TU_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
+  authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+  projectId: "malla-curricular-arquitectura",
+  storageBucket: "malla-curricular-arquitectura.appspot.com",
+  messagingSenderId: "613677284410",
+  appId: "1:613677284410:web:3c0d68721e74f054378903"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 </script>
 </body>
 </html>
