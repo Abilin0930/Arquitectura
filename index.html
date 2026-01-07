@@ -75,7 +75,7 @@ const mensajes = [
  {p:90,m:"Estás muy cerca del sueño ✨"},
  {p:100,m:"¡LO LOGRASTE! Manos A La Obra 🎓"}
 ];
-
+  
 const data = [
 {año:"AÑO 1", semestres:[
 {nombre:"1° SEMESTRE", materias:[
@@ -174,15 +174,84 @@ const data = [
 {n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}]}]}];
 
 async function render(){
+
 const m=document.getElementById("malla");
 m.innerHTML="";
 let total=0,ok=0;
 
-let materiasAprobadas = {};
-</script>
+let materiasAprobadas={};
 
-<script>
-async function render(){
+if(usuario){
+ const snap = await db.collection("usuarios")
+   .doc(usuario.uid)
+   .collection("materias")
+   .get();
+
+ snap.forEach(d=>materiasAprobadas[d.id]=true);
+}
+
+data.forEach(a=>{
+ const d=document.createElement("div");
+ d.className="ano";
+ d.innerHTML=`<h2>${a.año}</h2>`;
+
+ a.semestres.forEach(s=>{
+  const sd=document.createElement("div");
+  sd.className="semestre";
+  sd.innerHTML=`<h3>${s.nombre}</h3>`;
+
+  s.materias.forEach(x=>{
+   total++;
+
+   let nombre=typeof x==="string"?x:x.n;
+   let p=typeof x==="string"?[]:x.p;
+
+   const div=document.createElement("div");
+   div.className="materia";
+   div.textContent=nombre;
+
+   const aprobado = materiasAprobadas[nombre];
+   if(aprobado){div.classList.add("aprobada");ok++;}
+
+   const faltan = p.filter(r=>!materiasAprobadas[r]);
+   if(faltan.length){
+     div.classList.add("bloqueada");
+     div.dataset.tooltip="Falta: "+faltan.join(", ");
+   }
+
+   div.onclick=async ()=>{
+     if(!usuario) return alert("Inicia sesión 💚");
+     if(faltan.length) return;
+
+     if(aprobado){
+       await db.collection("usuarios").doc(usuario.uid)
+        .collection("materias").doc(nombre).delete();
+     } else {
+       await db.collection("usuarios").doc(usuario.uid)
+        .collection("materias").doc(nombre).set({ok:true});
+     }
+
+     render();
+   };
+
+   sd.appendChild(div);
+  });
+
+  d.appendChild(sd);
+ });
+
+ m.appendChild(d);
+});
+
+const pct=Math.round(ok/total*100);
+document.getElementById("barra").style.width=pct+"%";
+document.getElementById("porcentaje").textContent="Progreso: "+pct+"%";
+
+let msg=mensajes[0].m;
+mensajes.forEach(x=>{if(pct>=x.p)msg=x.m});
+document.getElementById("mensaje").textContent=msg;
+
+}
 
 const m=document.getElementById("malla");
 m.innerHTML="";
