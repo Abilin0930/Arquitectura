@@ -55,24 +55,25 @@ h1{
 
 #malla{
   display:flex;
-  flex-wrap:nowrap;
-  overflow-x:auto;
-  gap:20px;
-  padding:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:22px;
+  padding:10px 15px 30px;
 }
-#mallaa{
-  scrollbar-width:thin;
-  scrollbar-color:#7ea86c #e5efd7;
-}
-
 
 /* ===== TARJETAS POR AÑO ===== */
 
 .ano{
-  min-width:300px;
-  max-width:300px;
+  background:#e5efd7;
+  border-radius:22px;
+  padding:18px 14px 20px;
+  width:310px;
+  box-shadow:0 7px 14px rgba(0,0,0,.08);
 }
 
+.ano h2{
+  margin:5px 0 12px;
+  color:#4f6f2d;
 }
 
 /* ===== SEMESTRES ===== */
@@ -176,20 +177,21 @@ button:hover{
 
 </style>
 
-
 </head>
 <body>
 
-<h1>MALLA CURRICULAR DE ARQUITECTURA</h1>
+<h1>MALLA CURRUCILAR DE ARQUITECTURA</h1>
 
-<div class="progreso-box">
-  <p id="porcentaje">Progreso: 0%</p>
-  <div class="progreso-barra"><div id="barra"></div></div>
-  <p id="mensaje"></p>
-  <button onclick="reiniciar()">Reiniciar progreso</button>
+<div id="user"></div>
+
+<p id="p">0% completado</p>
+<div class="progreso-barra">
+  <div id="barra"></div>
 </div>
 
-<div class="malla" id="malla"></div>
+<button onclick="signIn()">Iniciar sesión con Google</button>
+<button onclick="signOut()">Cerrar sesión</button>
+
 
 <script>
 let usuario = null;
