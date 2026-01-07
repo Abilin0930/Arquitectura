@@ -25,113 +25,173 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
-
+  
 <style>
 
+*{
+  box-sizing:border-box;
+}
+
 body{
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   background:#f3f7ec;
   margin:0;
-  padding:0;
-  color:#334;
+  color:#2f3d2f;
   text-align:center;
 }
 
-/* CONTENEDOR GENERAL */
-.malla{
+h1{
+  margin:25px 0 5px;
+  color:#3f5f2f;
+}
+
+#user{
+  font-size:14px;
+  color:#556b2f;
+  margin-bottom:10px;
+}
+
+/* ===== CONTENEDOR GENERAL ===== */
+
+#malla{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
-  gap:20px;
-  padding:20px;
+  gap:22px;
+  padding:10px 15px 30px;
 }
 
-/* TARJETA DE AÑO */
+/* ===== TARJETAS POR AÑO ===== */
+
 .ano{
-  background:#e8f1da;
-  border-radius:18px;
-  padding:20px;
-  width:320px;
-  box-shadow:0 5px 12px rgba(0,0,0,.08);
+  background:#e5efd7;
+  border-radius:22px;
+  padding:18px 14px 20px;
+  width:310px;
+  box-shadow:0 7px 14px rgba(0,0,0,.08);
 }
 
-/* TITULOS */
-h1{
-  margin-top:25px;
-  color:#556b2f;
-  font-size:28px;
+.ano h2{
+  margin:5px 0 12px;
+  color:#4f6f2d;
 }
 
-h2{
-  color:#5f7a32;
-}
-
-.semestre{
-  margin-top:10px;
-}
+/* ===== SEMESTRES ===== */
 
 .semestre h3{
-  background:#dbe8c9;
-  padding:8px;
-  border-radius:12px;
+  background:#d7e7c5;
+  border-radius:14px;
+  padding:6px;
+  margin:8px 0;
+  font-size:15px;
 }
 
-/* MATERIA */
+/* ===== MATERIAS ===== */
+
 .materia{
   background:white;
   margin:6px 0;
   padding:8px;
-  border-radius:12px;
+  border-radius:14px;
   cursor:pointer;
-  transition:.2s;
+  transition:.18s;
+  border:1px solid transparent;
 }
 
-/* APROBADA */
+.materia:hover{
+  transform:scale(1.02);
+  box-shadow:0 3px 8px rgba(0,0,0,.08);
+}
+
+/* ===== APROBADAS ===== */
 .aprobada{
-  background:#7da96b;
+  background:#7ea86c;
   color:white;
 }
 
-/* BLOQUEADA */
+/* ===== BLOQUEADAS ===== */
 .bloqueada{
   background:#dddddd;
   color:#777;
   cursor:not-allowed;
+  border:1px dashed #aaa;
 }
 
-/* BARRA PROGRESO */
+/* ===== TOOLTIP ===== */
+
+.materia[data-tooltip]{
+  position:relative;
+}
+
+.materia[data-tooltip]:hover::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  background:#333;
+  color:white;
+  padding:6px 8px;
+  border-radius:8px;
+  font-size:12px;
+  top:-32px;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+}
+
+/* ===== PROGRESO ===== */
+
+#p{
+  margin:10px 0 6px;
+}
+
 .progreso-barra{
   width:80%;
   height:12px;
-  background:#dcdcdc;
+  background:#d4d4d4;
   border-radius:20px;
-  margin:0 auto;
+  margin:0 auto 12px;
 }
 
 #barra{
   height:100%;
-  background:#7da96b;
+  background:#7ea86c;
   border-radius:20px;
+  width:0%;
 }
 
-/* BOTON */
+/* ===== BOTONES ===== */
+
 button{
-  background:#7da96b;
+  background:#7ea86c;
   color:white;
   border:none;
-  padding:8px 14px;
+  padding:8px 16px;
   border-radius:10px;
   margin:8px;
+  cursor:pointer;
+  font-size:14px;
 }
 
 button:hover{
-  opacity:.8;
+  opacity:.85;
 }
+
 </style>
+
 
 </head>
 
 <body>
+<h1>Malla Curricular</h1>
+
+<div id="user"></div>
+
+<p id="p">0% completado</p>
+<div class="progreso-barra">
+  <div id="barra"></div>
+</div>
+
+<button onclick="signIn()">Iniciar sesión con Google</button>
+<button onclick="signOut()">Cerrar sesión</button>
 
 <div id="auth">
   <button onclick="loginGoogle()">Iniciar sesión con Google</button>
