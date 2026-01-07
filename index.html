@@ -2,362 +2,301 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malla Curricular de Arquitectura</title>
+<title>Malla Curricular Arquitectura</title>
+
 <style>
-body {
-  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-  background-color: #ecf3ec;
-  margin: 0;
-  padding: 20px;
-  text-align: center;
+body{
+  font-family: "Arial Rounded MT Bold", Arial, sans-serif;
+  background:#f7f9f4;
+  padding:25px;
+  color:#3f4f2f;
+}
+h1{
+  text-align:center;
+  color:#6b7f45;
+  letter-spacing:2px;
 }
 
-h1 {
-  text-transform: uppercase;
-  color: #4d684d;
-  margin-bottom: 20px;
+button{
+  display:block;
+  margin:10px auto 20px;
+  background:#a7be8a;
+  border:none;
+  border-radius:25px;
+  padding:10px 25px;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+}
+button:hover{background:#8fa46f}
+
+/* PROGRESO */
+.progress-container{
+  max-width:900px;
+  margin:0 auto 25px;
+}
+.progress-text{
+  text-align:center;
+  font-size:14px;
+  margin-bottom:6px;
+}
+.progress-bar{
+  width:100%;
+  background:#dfe7d6;
+  border-radius:20px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:14px;
+  background:#9dbb84;
+  width:0%;
+  transition:width .4s;
 }
 
-.malla {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+/* MALLA */
+.malla{
+  display:flex;
+  gap:25px;
+  overflow-x:auto;
+  padding-bottom:10px;
 }
 
-.anio {
-  flex: 1 1 300px;
-  border-radius: 15px;
-  padding: 15px;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.ano{
+  background:#eef3e8;
+  border-radius:20px;
+  padding:18px;
+  min-width:320px;
+  box-shadow:0 4px 8px rgba(0,0,0,.08);
 }
 
-.anio h2 {
-  text-align: center;
-  padding: 10px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  color: #fff;
+.ano h2{
+  text-align:center;
+  color:#6b7f45;
+  border-bottom:2px solid #b7c7a1;
+  padding-bottom:6px;
 }
 
-.semestre {
-  margin-bottom: 15px;
+.semestre h3{
+  text-align:center;
+  background:#d9e5cc;
+  border-radius:15px;
+  padding:6px;
+  margin:14px 0;
+  font-size:14px;
 }
 
-.semestre h3 {
-  background-color: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  padding: 5px;
-  margin: 10px 0;
-  font-size: 1.1em;
-  text-transform: uppercase;
+.materia{
+  background:#fdfefe;
+  border-radius:12px;
+  padding:7px;
+  margin-bottom:6px;
+  text-align:center;
+  cursor:pointer;
+  font-size:13.5px;
+  position:relative;
 }
 
-.materia {
-  background-color: rgba(255,255,255,0.2);
-  border-radius: 8px;
-  padding: 8px;
-  margin: 5px 0;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s;
+.materia.aprobada{
+  background:#9dbb84;
+  color:white;
+  text-decoration:line-through;
 }
 
-.materia:hover:not(.bloqueada) {
-  background-color: rgba(255,255,255,0.35);
-  transform: scale(1.03);
+.materia.bloqueada{
+  background:#e0e0e0;
+  color:#999;
+  cursor:not-allowed;
 }
 
-.materia.aprobada {
-  background-color: #7dbb7d;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: line-through;
+.materia.bloqueada:hover::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  bottom:120%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#6b7f45;
+  color:white;
+  padding:6px 10px;
+  border-radius:12px;
+  font-size:11px;
+  white-space:nowrap;
 }
-
-.materia.bloqueada {
-  background-color: rgba(255,255,255,0.1);
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.materia.bloqueada:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 120%;
-  background-color: #355a35;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 10px;
-  font-size: 0.8em;
-  white-space: nowrap;
-  z-index: 10;
-}
-
-.btn-reiniciar {
-  margin: 30px auto;
-  padding: 12px 25px;
-  background: #7dbb7d;
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 1em;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  animation: pulse 2s infinite;
-}
-
-.btn-reiniciar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(125,187,125,0.8);
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px rgba(125,187,125,0.4); }
-  50% { box-shadow: 0 0 20px rgba(125,187,125,0.8); }
-  100% { box-shadow: 0 0 10px rgba(125,187,125,0.4); }
-}
-
-.anio-1 { background: linear-gradient(135deg, #cce5cc, #99d699); }
-.anio-2 { background: linear-gradient(135deg, #b3e0b3, #80cc80); }
-.anio-3 { background: linear-gradient(135deg, #99d699, #66b366); }
-.anio-4 { background: linear-gradient(135deg, #80cc80, #4d994d); }
-.anio-5 { background: linear-gradient(135deg, #66b366, #338433); }
 </style>
 </head>
+
 <body>
-<h1>MALLA CURRICULAR DE ARQUITECTURA</h1>
+
+<h1>MALLA CURRICULAR ARQUITECTURA</h1>
+
+<div class="progress-container">
+  <div class="progress-text" id="progressText">Progreso: 0%</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<button onclick="resetear()">Reiniciar progreso</button>
+
 <div class="malla" id="malla"></div>
-<button class="btn-reiniciar" id="reiniciar">Reiniciar Progreso</button>
 
 <script>
-// Datos de los 5 años con materias y prerrequisitos
 const data = [
-{
-  anio: "Primer Año",
-  clase: "anio-1",
-  semestres: [
-    {nombre: "1° Semestre", materias: [
-      {nombre:"Diseño Arquitectónico 1"},
-      {nombre:"Composición Arquitectónica 1"},
-      {nombre:"Introducción A La Teoría"},
-      {nombre:"Arte: Antigüedad A S. XVIII"},
-      {nombre:"Representación Arquitectónica 1"},
-      {nombre:"Introducción A La Edificación"},
-      {nombre:"Matemática Aplicada"}
-    ]},
-    {nombre: "2° Semestre", materias: [
-      {nombre:"Física Aplicada", prereq:["Matemática Aplicada"]},
-      {nombre:"Diseño Arquitectónico 2", prereq:["Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría","Representación Arquitectónica 1","Introducción A La Edificación"]},
-      {nombre:"Composición Arquitectónica 2", prereq:["Composición Arquitectónica 1","Diseño Arquitectónico 1"]},
-      {nombre:"Sistemas Constructivos Básicos", prereq:["Introducción A La Edificación"]},
-      {nombre:"Arte: Moderno Y Contemporáneo", prereq:["Arte: Antigüedad A S. XVIII"]},
-      {nombre:"Topografía", prereq:["Introducción A La Edificación","Matemática Aplicada"]},
-      {nombre:"Dibujo A Mano Alzada"}
-    ]},
-    {nombre: "Verano", materias:[
-      {nombre:"Taller De Diseño Arquitectónico 1", prereq:["Representación Arquitectónica 1","Diseño Arquitectónico 2"]},
-      {nombre:"Taller De Visualización"},
-      {nombre:"Geomática"}
-    ]}
-  ]
-},
-{
-  anio: "Segundo Año",
-  clase: "anio-2",
-  semestres: [
-    {nombre:"1° Semestre", materias:[
-      {nombre:"Español"},
-      {nombre:"Diseño Arquitectónico 3", prereq:["Introducción A La Teoría","Diseño Arquitectónico 2","Composición Arquitectónica 2","Sistemas Constructivos Básicos","Topografía","Taller De Diseño Arquitectónico 1"]},
-      {nombre:"Interpretación De La Arquitectura", prereq:["Introducción A La Teoría"]},
-      {nombre:"Representación Arquitectónica 2", prereq:["Representación Arquitectónica 1"]},
-      {nombre:"Tecnología Del Hormigón Armado", prereq:["Introducción A La Edificación","Sistemas Constructivos Básicos"]},
-      {nombre:"Modelos Estructurales", prereq:["Física Aplicada"]},
-      {nombre:"Introducción A La Investigación"}
-    ]},
-    {nombre:"2° Semestre", materias:[
-      {nombre:"Inglés"},
-      {nombre:"Sociedad Medio Ambiente Y Des.", prereq:["Diseño Arquitectónico 3","Introducción A La Edificación"]},
-      {nombre:"Diseño Arquitectónico 4", prereq:["Diseño Arquitectónico 3","Interpretación De La Arquitectura","Representación Arquitectónica 2","Tecnología Del Hormigón Armado"]},
-      {nombre:"Textos Y Contextos De La Arq. Latinoamericana", prereq:["Interpretación De La Arquitectura"]},
-      {nombre:"Representación Arquitectónica 3", prereq:["Representación Arquitectónica 2"]},
-      {nombre:"Sistemas Constructivos Especiales", prereq:["Tecnología Del Hormigón Armado"]},
-      {nombre:"Análisis Estructural", prereq:["Modelos Estructurales"]}
-    ]},
-    {nombre:"Verano", materias:[
-      {nombre:"Taller De Diseño Arquitectónico 2", prereq:["Taller De Diseño Arquitectónico 1","Diseño Arquitectónico 4","Representación Arquitectónica 3","Sistemas Constructivos Especiales"]},
-      {nombre:"Electiva 1"},
-      {nombre:"Electiva 2"}
-    ]}
-  ]
-},
-{
-  anio: "Tercer Año",
-  clase: "anio-3",
-  semestres:[
-    {nombre:"1° Semestre", materias:[
-      {nombre:"Historia De Pma En El Mundo Global"},
-      {nombre:"Diseño Arquitectónico 5", prereq:["Diseño Arquitectónico 4","Textos Y Contextos De La Arq. Latinoamericana","Representación Arquitectónica 3","Sistemas Constructivos Especiales","Taller De Diseño Arquitectónico 2"]},
-      {nombre:"Crítica De La Arquitectura Y Pensamiento Contemporáneo", prereq:["Textos Y Contextos De La Arq. Latinoamericana"]},
-      {nombre:"Representación Arquitectónica 4", prereq:["Representación Arquitectónica 3"]},
-      {nombre:"Sistemas Constructivos Complejos", prereq:["Sistemas Constructivos Especiales"]},
-      {nombre:"Instalaciones Para Edificio 1", prereq:["Física Aplicada"]},
-      {nombre:"Espacios Abiertos Vecinales", prereq:["Sociedad Medio Ambiente Y Des.","Topografía","Introducción A La Investigación","Diseño Arquitectónico 4"]}
-    ]},
-    {nombre:"2° Semestre", materias:[
-      {nombre:"Geografía De Panamá"},
-      {nombre:"Diseño Arquitectónico 6", prereq:["Diseño Arquitectónico 5","Crítica De La Arquitectura Y Pensamiento Contemporáneo","Representación Arquitectónica 4","Sistemas Constructivos Complejos","Instalaciones Para Edificio 1"]},
-      {nombre:"Arquitectura Y Ciudad 1", prereq:["Arte: Moderno Y Contemporáneo"]},
-      {nombre:"Representación Arquitectónica 5", prereq:["Representación Arquitectónica 4"]},
-      {nombre:"Gestión De Seguridad Y Salud Ocupacional", prereq:["Sistemas Constructivos Complejos"]},
-      {nombre:"Instalaciones Para Edificio 2", prereq:["Instalaciones Para Edificio 1"]},
-      {nombre:"Ciudad Y Comunidad", prereq:["Diseño Arquitectónico 5","Espacios Abiertos Vecinales"]}
-    ]},
-    {nombre:"Verano", materias:[
-      {nombre:"Taller De Diseño Arquitectónico 3", prereq:["Taller De Diseño Arquitectónico 2","Sistemas Constructivos Complejos","Diseño Arquitectónico 5","Representación Arquitectónica 5"]},
-      {nombre:"Práctica Supervisada 1", prereq:["Gestión De Seguridad Y Salud Ocupacional"]},
-      {nombre:"Optativa 1"}
-    ]}
-  ]
-},
-{
-  anio: "Cuarto Año",
-  clase:"anio-4",
-  semestres:[
-    {nombre:"1° Semestre", materias:[
-      {nombre:"Diseño Arquitectónico 7", prereq:["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
-      {nombre:"Arquitectura Y Ciudad 2", prereq:["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
-      {nombre:"Representación Arquitectónica 6", prereq:["Representación Arquitectónica 5"]},
-      {nombre:"Taller De Planos Y Especificaciones", prereq:["Introducción A La Investigación"]},
-      {nombre:"Diseño Estructural Simplificado", prereq:["Análisis Estructural","Sistemas Constructivos Complejos"]},
-      {nombre:"Instalaciones Para Edificios 3", prereq:["Instalaciones Para Edificio 2"]},
-      {nombre:"Urbanismo", prereq:["Geomática","Diseño Arquitectónico 6","Ciudad Y Comunidad"]}
-    ]},
-    {nombre:"2° Semestre", materias:[
-      {nombre:"Diseño Arquitectónico 8", prereq:["Diseño Arquitectónico 7","Representación Arquitectónica 6","Diseño Estructural Simplificado","Instalaciones Para Edificios 3"]},
-      {nombre:"Arquitectura Y Ciudad 3", prereq:["Arquitectura Y Ciudad 2"]},
-      {nombre:"Presupuesto De Obra", prereq:["Sistemas Constructivos Complejos","Taller De Planos Y Especificaciones"]},
-      {nombre:"Estructuras Especiales", prereq:["Diseño Estructural Simplificado"]},
-      {nombre:"Instalaciones Para Edificios 4", prereq:["Instalaciones Para Edificios 3"]},
-      {nombre:"Espacios Abiertos Urbanos", prereq:["Diseño Arquitectónico 7","Urbanismo"]},
-      {nombre:"Metodología Para La Elaboración De Tesis", prereq:["Diseño Arquitectónico 7","Arquitectura Y Ciudad 2","Representación Arquitectónica 6","Taller De Planos Y Especificaciones","Diseño Estructural Simplificado","Instalaciones Para Edificios 3","Urbanismo"]}
-    ]},
-    {nombre:"Verano", materias:[
-      {nombre:"Taller De Urbanismo", prereq:["Diseño Arquitectónico 8","Espacios Abiertos Urbanos"]},
-      {nombre:"Práctica Supervisada 2", prereq:["Práctica Supervisada 1"]},
-      {nombre:"Optativa 2"}
-    ]}
-  ]
-},
-{
-  anio:"Quinto Año",
-  clase:"anio-5",
-  semestres:[
-    {nombre:"1° Semestre", materias:[
-      {nombre:"Historia De Las Relaciones De Pma Con Los EE.UU. I"},
-      {nombre:"Diseño Arquitectónico 9", prereq:["Diseño Arquitectónico 8","Estructuras Especiales","Instalaciones Para Edificios 4"]},
-      {nombre:"Arquitectura Y Ciudad 4", prereq:["Arquitectura Y Ciudad 3"]},
-      {nombre:"Programación Y Control De PYT", prereq:["Taller De Planos Y Especificaciones","Presupuesto De Obra"]},
-      {nombre:"Gestión Profesional", prereq:["Diseño Arquitectónico 8","Práctica Supervisada 2"]},
-      {nombre:"Ciudad Y Territorio", prereq:["Taller De Urbanismo"]},
-      {nombre:"Trabajo De Graduación 1", prereq:["Todo Cuarto Año Terminado"]}
-    ]},
-    {nombre:"2° Semestre", materias:[
-      {nombre:"Historia De Las Relaciones De Pma Con Los EE.UU. II"},
-      {nombre:"Diseño Arquitectónico 10", prereq:["Diseño Arquitectónico 9"]},
-      {nombre:"Patrimonio Arquitectónico", prereq:["Arquitectura Y Ciudad 4"]},
-      {nombre:"Gestión Y Mantenimiento De Edificios", prereq:["Práctica Supervisada 2","Programación Y Control De PYT"]},
-      {nombre:"Práctica Supervisada 3", prereq:["Representación Arquitectónica 6","Práctica Supervisada 2","Diseño Arquitectónico 9","Programación Y Control De PYT","Gestión Profesional","Ciudad Y Territorio"]},
-      {nombre:"Gestión Urbana Y Territorial", prereq:["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
-      {nombre:"Trabajo De Graduación 2", prereq:["Trabajo De Graduación 1"]}
-    ]}
-  ]
-}
+{año:1, semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 1"},
+{n:"Composición Arquitectónica 1"},
+{n:"Introducción a la Teoría"},
+{n:"Arte: Antigüedad a S. XVIII"},
+{n:"Representación Arquitectónica 1"},
+{n:"Introducción a la Edificación"},
+{n:"Matemática Aplicada"}
+]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Física Aplicada", p:["Matemática Aplicada"]},
+{n:"Diseño Arquitectónico 2", p:["Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción a la Teoría","Representación Arquitectónica 1","Introducción a la Edificación"]},
+{n:"Composición Arquitectónica 2", p:["Composición Arquitectónica 1","Diseño Arquitectónico 1"]},
+{n:"Sistemas Constructivos Básicos", p:["Introducción a la Edificación"]},
+{n:"Arte: Moderno y Contemporáneo", p:["Arte: Antigüedad a S. XVIII"]},
+{n:"Topografía", p:["Introducción a la Edificación","Matemática Aplicada"]},
+{n:"Dibujo a Mano Alzada"}
+]},
+{nombre:"VERANO", materias:[
+{n:"Taller de Diseño Arquitectónico 1", p:["Diseño Arquitectónico 2","Representación Arquitectónica 1"]},
+{n:"Taller de Visualización"},
+{n:"Geomática"}
+]}
+]},
+{año:2, semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Español"},
+{n:"Diseño Arquitectónico 3", p:["Diseño Arquitectónico 2"]},
+{n:"Interpretación de la Arquitectura"},
+{n:"Representación Arquitectónica 2", p:["Representación Arquitectónica 1"]},
+{n:"Tecnología del Hormigón Armado"},
+{n:"Modelos Estructurales"},
+{n:"Introducción a la Investigación"}
+]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Inglés"},
+{n:"Sociedad Medio Ambiente y Desarrollo"},
+{n:"Diseño Arquitectónico 4", p:["Diseño Arquitectónico 3"]},
+{n:"Textos y Contextos de la Arquitectura Latinoamericana"},
+{n:"Representación Arquitectónica 3"},
+{n:"Sistemas Constructivos Especiales"},
+{n:"Análisis Estructural"}
+]},
+{nombre:"VERANO", materias:[
+{n:"Taller de Diseño Arquitectónico 2", p:["Diseño Arquitectónico 4"]},
+{n:"Electiva 1"},
+{n:"Electiva 2"}
+]}
+]},
+{año:3, semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 5"},
+{n:"Urbanismo 1"},
+{n:"Instalaciones Sanitarias"},
+{n:"Instalaciones Eléctricas"},
+{n:"Estructuras de Acero"},
+{n:"Metodología de la Investigación"}
+]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 6"},
+{n:"Urbanismo 2"},
+{n:"Arquitectura Bioclimática"},
+{n:"Presupuesto y Avalúos"},
+{n:"Gestión de Proyectos"},
+{n:"Electiva 3"}
+]}
+]},
+{año:4, semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 7"},
+{n:"Planificación Urbana"},
+{n:"Arquitectura Sostenible"},
+{n:"Legislación y Ética Profesional"},
+{n:"Electiva 4"}
+]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 8"},
+{n:"Restauración Arquitectónica"},
+{n:"Paisajismo"},
+{n:"Electiva 5"}
+]}
+]},
+{año:5, semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Práctica Profesional"},
+{n:"Seminario de Tesis"},
+{n:"Gestión Empresarial"}
+]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Trabajo de Graduación"}
+]}
+]}
 ];
 
-// Funciones para crear la malla y manejar aprobadas
-const contenedor=document.getElementById("malla");
+function render(){
+const cont=document.getElementById("malla");
+cont.innerHTML="";
+let total=0, aprobadas=0;
 
-function crearMalla(){
-  contenedor.innerHTML="";
-  data.forEach(anio=>{
-    const div=document.createElement("div");
-    div.className=`anio ${anio.clase}`;
-    const h2=document.createElement("h2");
-    h2.textContent=anio.anio;
-    div.appendChild(h2);
-    anio.semestres.forEach(sem=>{
-      const semDiv=document.createElement("div");
-      semDiv.className="semestre";
-      const h3=document.createElement("h3");
-      h3.textContent=sem.nombre;
-      semDiv.appendChild(h3);
-      sem.materias.forEach(mat=>{
-        const m=document.createElement("div");
-        m.className="materia";
-        m.textContent=mat.nombre;
-        m.dataset.nombre=mat.nombre;
-        if(mat.prereq)m.dataset.prereq=JSON.stringify(mat.prereq);
-        semDiv.appendChild(m);
-      });
-      div.appendChild(semDiv);
-    });
-    contenedor.appendChild(div);
-  });
-  cargarProgreso();
+data.forEach(a=>{
+const d=document.createElement("div");
+d.className="ano";
+d.innerHTML=`<h2>AÑO ${a.año}</h2>`;
+
+a.semestres.forEach(s=>{
+const sd=document.createElement("div");
+sd.className="semestre";
+sd.innerHTML=`<h3>${s.nombre}</h3>`;
+
+s.materias.forEach(m=>{
+total++;
+const md=document.createElement("div");
+md.className="materia";
+md.textContent=m.n;
+
+if(localStorage.getItem(m.n)){
+md.classList.add("aprobada");
+aprobadas++;
 }
 
-function actualizarBloqueadas(){
-  document.querySelectorAll(".materia").forEach(m=>{
-    const prereq=JSON.parse(m.dataset.prereq||"[]");
-    if(prereq.length>0){
-      const aprobadas=JSON.parse(localStorage.getItem("aprobadas")||"[]");
-      const faltantes=prereq.filter(p=>!aprobadas.includes(p));
-      if(faltantes.length){
-        m.classList.add("bloqueada");
-        m.classList.remove("aprobada");
-        m.setAttribute("data-tooltip","Faltan: "+faltantes.join(", "));
-      }else{
-        m.classList.remove("bloqueada");
-        m.removeAttribute("data-tooltip");
-      }
-    }
-  });
+if(m.p){
+const faltan=m.p.filter(x=>!localStorage.getItem(x));
+if(faltan.length){
+md.classList.add("bloqueada");
+md.dataset.tooltip="Falta: "+faltan.join(", ");
+}
 }
 
-function guardarProgreso(){
-  const aprobadas=[...document.querySelectorAll(".materia.aprobada")].map(m=>m.dataset.nombre);
-  localStorage.setItem("aprobadas",JSON.stringify(aprobadas));
+md.onclick=()=>{
+if(md.classList.contains("bloqueada")) return;
+if(md.classList.toggle("aprobada")) localStorage.setItem(m.n,1);
+else localStorage.removeItem(m.n);
+render();
 }
 
-function cargarProgreso(){
-  const aprobadas=JSON.parse(localStorage.getItem("aprobadas")||"[]");
-  document.querySelectorAll(".materia").forEach(m=>{
-    if(aprobadas.includes(m.dataset.nombre))m.classList.add("aprobada");
-  });
-  actualizarBloqueadas();
-}
-
-document.addEventListener("click",e=>{
-  if(e.target.classList.contains("materia")&&!e.target.classList.contains("bloqueada")){
-    e.target.classList.toggle("aprobada");
-    guardarProgreso();
-    actualizarBloqueadas();
-  }
+sd.appendChild(md);
+});
+d.appendChild(sd);
+});
+cont.appendChild(d);
 });
 
-document.getElementById("reiniciar").addEventListener("click",()=>{
-  localStorage.removeItem("aprobadas");
-  crearMalla();
-});
+const porcentaje=Math.round((aprobadas/total)*100);
+document.getElementById("progressFill").style.width=porcentaje+"%";
+document.getElementById("progressText").textContent=`Progreso: ${porcentaje}%`;
+}
 
-crearMalla();
+function resetear(){
+if(confirm("¿Seguro que quieres borrar todo el progreso?")){
+localStorage.clear();
+render();
+}
+}
+
+render();
 </script>
 </body>
 </html>
