@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+<!-- Firebase SDK -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
+    authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+    projectId: "malla-curricular-arquitectura",
+    storageBucket: "malla-curricular-arquitectura.appspot.com",
+    messagingSenderId: "613677284410",
+    appId: "1:613677284410:web:3c0d68721e74f054378903"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
 <head>
 <meta charset="UTF-8">
 <title>Malla Curricular Arquitectura</title>
@@ -131,6 +147,41 @@ button:hover{background:#6f8440}
 <div class="malla" id="malla"></div>
 
 <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
+    authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+    projectId: "malla-curricular-arquitectura",
+    storageBucket: "malla-curricular-arquitectura.appspot.com",
+    messagingSenderId: "613677284410",
+    appId: "1:613677284410:web:3c0d68721e74f054378903"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+  
+<script>
+let usuario = null;
+
+auth.onAuthStateChanged(u => {
+  usuario = u;
+  if (u) {
+    document.getElementById("auth").style.display = "none";
+    render();
+  } else {
+    document.getElementById("auth").style.display = "block";
+  }
+});
+
+function loginGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
+}
+
+function logout() {
+  auth.signOut();
+}
 const mensajes = [
  {p:0, m:"Todo gran proyecto empieza con una idea 🌱"},
  {p:10, m:"Vas tomando forma, sigue así ✏️"},
@@ -238,10 +289,21 @@ const data = [
 {n:"Gestión Urbana Y Territorial",p:["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
 {n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}]}]}];
 
-function render(){
+async function render(){
 const m=document.getElementById("malla");
 m.innerHTML="";
 let total=0,ok=0;
+
+let materiasAprobadas = {};
+
+if(usuario){
+  const snap = await db.collection("usuarios")
+    .doc(usuario.uid)
+    .collection("materias")
+    .get();
+
+  snap.forEach(d=>materiasAprobadas[d.id]=true);
+}
 
 data.forEach(a=>{
  const d=document.createElement("div");
@@ -258,18 +320,36 @@ data.forEach(a=>{
    const div=document.createElement("div");
    div.className="materia";
    div.textContent=nombre;
-   const aprobado=localStorage.getItem(nombre);
+
+   const aprobado = materiasAprobadas[nombre];
    if(aprobado){div.classList.add("aprobada");ok++}
-   const faltan=p.filter(r=>!localStorage.getItem(r));
+
+   const faltan = p.filter(r=>!materiasAprobadas[r]);
    if(faltan.length){
     div.classList.add("bloqueada");
     div.dataset.tooltip="Falta: "+faltan.join(", ");
    }
-   div.onclick=()=>{
+
+   div.onclick=async ()=>{
+    if(!usuario) return alert("Primero inicia sesión 💚");
     if(div.classList.contains("bloqueada"))return;
-    aprobado?localStorage.removeItem(nombre):localStorage.setItem(nombre,"ok");
+
+    if(aprobado){
+      await db.collection("usuarios")
+        .doc(usuario.uid)
+        .collection("materias")
+        .doc(nombre)
+        .delete();
+    } else {
+      await db.collection("usuarios")
+        .doc(usuario.uid)
+        .collection("materias")
+        .doc(nombre)
+        .set({ok:true});
+    }
+
     render();
-   };
+
    sd.appendChild(div);
   });
   d.appendChild(sd);
@@ -280,18 +360,12 @@ data.forEach(a=>{
 const pct=Math.round(ok/total*100);
 document.getElementById("barra").style.width=pct+"%";
 document.getElementById("porcentaje").textContent="Progreso: "+pct+"%";
+
 let msg=mensajes[0].m;
 mensajes.forEach(x=>{if(pct>=x.p)msg=x.m});
 document.getElementById("mensaje").textContent=msg;
 }
-
-function reiniciar(){
- if(confirm("¿Borrar todo el progreso?")){
-  localStorage.clear();
-  render();
- }
-}
-render();
+   
 </script>
   <script type="module">
   // Import the functions you need from the SDKs you need
