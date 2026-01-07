@@ -310,14 +310,6 @@ let materiasAprobadas = {};
 </script>
 
 <script>
-async function render(){
-
-const m=document.getElementById("malla");
-m.innerHTML="";
-let total=0,ok=0;
-
-let materiasAprobadas={};
-
 if(usuario){
  const snap = await db.collection("usuarios")
    .doc(usuario.uid)
@@ -402,12 +394,8 @@ function reiniciar(){
 }
 
 render();
+  
 </script>
-
-</body>
-</html>
-}
-
 render();
 </script>
 
