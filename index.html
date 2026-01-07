@@ -115,7 +115,12 @@ button:hover{background:#6f8440}
 <body>
 
 <h1>MALLA CURRICULAR ARQUITECTURA</h1>
-
+<div style="text-align:center;">
+  <button onclick="loginGoogle()">Iniciar sesión con Google</button>
+  <button onclick="logout()">Cerrar sesión</button>
+  <p id="estadoLogin">Sin iniciar sesión</p>
+</div>
+  
 <div class="progreso-box">
   <p id="porcentaje">Progreso: 0%</p>
   <div class="progreso-barra"><div id="barra"></div></div>
@@ -260,11 +265,18 @@ data.forEach(a=>{
     div.classList.add("bloqueada");
     div.dataset.tooltip="Falta: "+faltan.join(", ");
    }
-   div.onclick=()=>{
-    if(div.classList.contains("bloqueada"))return;
-    aprobado?localStorage.removeItem(nombre):localStorage.setItem(nombre,"ok");
-    render();
-   };
+  div.onclick=()=>{
+  if(div.classList.contains("bloqueada")) return;
+
+  if(aprobado){
+    localStorage.removeItem(nombre);
+  } else {
+    localStorage.setItem(nombre,"ok");
+  }
+
+  guardarProgreso();
+  render();
+};
    sd.appendChild(div);
   });
   d.appendChild(sd);
@@ -283,33 +295,97 @@ document.getElementById("mensaje").textContent=msg;
 function reiniciar(){
  if(confirm("¿Borrar todo el progreso?")){
   localStorage.clear();
+  guardarProgreso();
   render();
  }
 }
 render();
-</script>
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
-    authDomain: "malla-curricular-arquitectura.firebaseapp.com",
-    projectId: "malla-curricular-arquitectura",
-    storageBucket: "malla-curricular-arquitectura.firebasestorage.app",
-    messagingSenderId: "613677284410",
-    appId: "1:613677284410:web:92297cf4c86a6f6c378903",
-    measurementId: "G-YN189BKMCH"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDGFEsBWnEHP3luKaeaFzUe_Nguqz3j_pA",
+  authDomain: "malla-curricular-arquitectura.firebaseapp.com",
+  projectId: "malla-curricular-arquitectura",
+  storageBucket: "malla-curricular-arquitectura.firebasestorage.app",
+  messagingSenderId: "613677284410",
+  appId: "1:613677284410:web:92297cf4c86a6f6c378903",
+  measurementId: "G-YN189BKMCH"
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+let userId = null;
+
+// ---------- LOGIN GOOGLE ----------
+window.loginGoogle = async function () {
+  await signInWithPopup(auth, provider);
+};
+
+// ---------- LOGOUT ----------
+window.logout = async function () {
+  await signOut(auth);
+  localStorage.clear();
+  render();
+};
+
+// ---------- CUANDO HAY USUARIO ----------
+onAuthStateChanged(auth, async (user) => {
+  const status = document.getElementById("estadoLogin");
+
+  if (user) {
+    userId = user.uid;
+    status.textContent = "Conectado: " + user.email;
+
+    await cargarProgreso();
+    render();
+    escucharCambios();
+  } else {
+    status.textContent = "Sin iniciar sesión";
+    render();
+  }
+});
+
+// ---------- GUARDAR EN FIRESTORE ----------
+async function guardarProgreso() {
+  if (!userId) return;
+
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    data[k] = true;
+  }
+  await setDoc(doc(db, "progresos", userId), data);
+}
+
+// ---------- CARGAR DESDE FIRESTORE ----------
+async function cargarProgreso() {
+  const snap = await getDoc(doc(db, "progresos", userId));
+  if (snap.exists()) {
+    localStorage.clear();
+    const d = snap.data();
+    Object.keys(d).forEach(k => localStorage.setItem(k, "ok"));
+  }
+}
+
+// ---------- ESCUCHAR CAMBIOS ----------
+function escucharCambios() {
+  onSnapshot(doc(db, "progresos", userId), (snap) => {
+    if (snap.exists()) {
+      localStorage.clear();
+      const d = snap.data();
+      Object.keys(d).forEach(k => localStorage.setItem(k, "ok"));
+      render();
+    }
+  });
+}
+
+window.guardarProgreso = guardarProgreso;
 </script>
 </body>
 </html>
