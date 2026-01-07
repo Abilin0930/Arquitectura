@@ -8,13 +8,13 @@
 <style>
 body{
   font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-  background:#f7f9f4;
+  background:#f4f7ef;
   padding:30px;
   color:#2f3a1f;
 }
 h1{
   text-align:center;
-  color:#7a8f3a;
+  color:#6f8440;
   letter-spacing:3px;
 }
 .progreso-box{
@@ -22,28 +22,33 @@ h1{
   margin:20px auto;
   text-align:center;
 }
+#mensaje{
+  margin-top:10px;
+  font-size:0.9em;
+  color:#6f8440;
+}
 .progreso-barra{
-  background:#e2ead5;
+  background:#dde6d3;
   border-radius:20px;
   overflow:hidden;
   height:18px;
 }
 .progreso-barra div{
-  background:#9db47c;
+  background:#8fa86b;
   height:100%;
   width:0%;
-  transition:0.4s;
+  transition:0.5s;
 }
 button{
   margin-top:15px;
-  background:#a9bf8b;
+  background:#8fa86b;
   color:white;
   border:none;
   padding:10px 25px;
   border-radius:25px;
   cursor:pointer;
 }
-button:hover{background:#7a8f3a}
+button:hover{background:#6f8440}
 
 .malla{
   display:flex;
@@ -60,7 +65,7 @@ button:hover{background:#7a8f3a}
 }
 .ano h2{
   text-align:center;
-  color:#7a8f3a;
+  color:#6f8440;
   border-bottom:2px solid #b7c8a0;
   padding-bottom:8px;
 }
@@ -72,22 +77,23 @@ button:hover{background:#7a8f3a}
   margin-top:15px;
 }
 .materia{
-  background:white;
+  background:#ffffff;
   border-radius:12px;
   padding:8px;
   margin:6px 0;
   text-align:center;
   cursor:pointer;
   position:relative;
+  font-size:0.85em;
 }
 .materia.aprobada{
-  background:#9db47c;
+  background:#8fa86b;
   color:white;
   text-decoration:line-through;
 }
 .materia.bloqueada{
-  background:#ddd;
-  color:#999;
+  background:#e0e0e0;
+  color:#9a9a9a;
   cursor:not-allowed;
 }
 .materia.bloqueada:hover::after{
@@ -96,11 +102,11 @@ button:hover{background:#7a8f3a}
   bottom:120%;
   left:50%;
   transform:translateX(-50%);
-  background:#7a8f3a;
+  background:#6f8440;
   color:white;
   padding:6px 10px;
   border-radius:10px;
-  font-size:0.75em;
+  font-size:0.7em;
   white-space:nowrap;
 }
 </style>
@@ -113,23 +119,29 @@ button:hover{background:#7a8f3a}
 <div class="progreso-box">
   <p id="porcentaje">Progreso: 0%</p>
   <div class="progreso-barra"><div id="barra"></div></div>
+  <p id="mensaje"></p>
   <button onclick="reiniciar()">Reiniciar progreso</button>
 </div>
 
 <div class="malla" id="malla"></div>
 
 <script>
+const mensajes = [
+ {p:0, m:"Todo gran proyecto empieza con una idea 🌱"},
+ {p:10, m:"Vas tomando forma, sigue así ✏️"},
+ {p:25, m:"Ya estás construyendo bases sólidas 🧱"},
+ {p:50, m:"Mitad del camino, tu esfuerzo se nota 💚"},
+ {p:75, m:"Casi arquitecta, no te detengas 🏗️"},
+ {p:90, m:"Estás muy cerca del sueño ✨"},
+ {p:100, m:"¡LO LOGRASTE! Arquitecta en proceso 🎓"}
+];
+
 const data = [
 {año:"AÑO 1", semestres:[
 {nombre:"1° SEMESTRE", materias:[
-"Diseño Arquitectónico 1",
-"Composición Arquitectónica 1",
-"Introducción A La Teoría",
-"Arte: Antigüedad A S. XVIII",
-"Representación Arquitectónica 1",
-"Introducción A La Edificación",
-"Matemática Aplicada"
-]},
+"Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría",
+"Arte: Antigüedad A S. XVIII","Representación Arquitectónica 1",
+"Introducción A La Edificación","Matemática Aplicada"]},
 {nombre:"2° SEMESTRE", materias:[
 {n:"Física Aplicada",p:["Matemática Aplicada"]},
 {n:"Diseño Arquitectónico 2",p:["Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría","Representación Arquitectónica 1","Introducción A La Edificación"]},
@@ -137,14 +149,10 @@ const data = [
 {n:"Sistemas Constructivos Básicos",p:["Introducción A La Edificación"]},
 {n:"Arte: Moderno Y Contemporáneo",p:["Arte: Antigüedad A S. XVIII"]},
 {n:"Topografía",p:["Introducción A La Edificación","Matemática Aplicada"]},
-"Dibujo A Mano Alzada"
-]},
+"Dibujo A Mano Alzada"]},
 {nombre:"VERANO", materias:[
 {n:"Taller De Diseño Arquitectónico 1",p:["Representación Arquitectónica 1","Diseño Arquitectónico 2"]},
-"Taller De Visualización",
-"Geomática"
-]}
-]},
+"Taller De Visualización","Geomática"]}]},
 {año:"AÑO 2", semestres:[
 {nombre:"1° SEMESTRE", materias:[
 "Español",
@@ -153,8 +161,7 @@ const data = [
 {n:"Representación Arquitectónica 2",p:["Representación Arquitectónica 1"]},
 {n:"Tecnología Del Hormigón Armado",p:["Introducción A La Edificación","Sistemas Constructivos Básicos"]},
 {n:"Modelos Estructurales",p:["Física Aplicada"]},
-"Introducción A La Investigación"
-]},
+"Introducción A La Investigación"]},
 {nombre:"2° SEMESTRE", materias:[
 "Inglés",
 {n:"Sociedad Medio Ambiente Y Des.",p:["Diseño Arquitectónico 3","Introducción A La Edificación"]},
@@ -162,14 +169,10 @@ const data = [
 {n:"Textos Y Contextos De La Arq. Latinoamericana",p:["Interpretación De La Arquitectura"]},
 {n:"Representación Arquitectónica 3",p:["Representación Arquitectónica 2"]},
 {n:"Sistemas Constructivos Especiales",p:["Tecnología Del Hormigón Armado"]},
-{n:"Análisis Estructural",p:["Modelos Estructurales"]}
-]},
+{n:"Análisis Estructural",p:["Modelos Estructurales"]}]},
 {nombre:"VERANO", materias:[
 {n:"Taller De Diseño Arquitectónico 2",p:["Taller De Diseño Arquitectónico 1","Diseño Arquitectónico 4","Representación Arquitectónica 3","Sistemas Constructivos Especiales"]},
-"Electiva 1",
-"Electiva 2"
-]}
-]},
+"Electiva 1","Electiva 2"]}]},
 {año:"AÑO 3", semestres:[
 {nombre:"1° SEMESTRE", materias:[
 "Historia De Pma En El Mundo Global",
@@ -178,8 +181,7 @@ const data = [
 {n:"Representación Arquitectónica 4",p:["Representación Arquitectónica 3"]},
 {n:"Sistemas Constructivos Complejos",p:["Sistemas Constructivos Especiales"]},
 {n:"Instalaciones Para Edificio 1",p:["Física Aplicada"]},
-{n:"Espacios Abiertos Vecinales",p:["Sociedad Medio Ambiente Y Des.","Topografía","Introducción A La Investigación","Diseño Arquitectónico 4"]}
-]},
+{n:"Espacios Abiertos Vecinales",p:["Sociedad Medio Ambiente Y Des.","Topografía","Introducción A La Investigación","Diseño Arquitectónico 4"]}]},
 {nombre:"2° SEMESTRE", materias:[
 "Geografía De Panamá",
 {n:"Diseño Arquitectónico 6",p:["Diseño Arquitectónico 5","Crítica De La Arquitectura Y Pensamiento Contemporáneo","Representación Arquitectónica 4","Sistemas Constructivos Complejos","Instalaciones Para Edificio 1"]},
@@ -187,14 +189,11 @@ const data = [
 {n:"Representación Arquitectónica 5",p:["Representación Arquitectónica 4"]},
 {n:"Gestión De Seguridad Y Salud Ocupacional",p:["Sistemas Constructivos Complejos"]},
 {n:"Instalaciones Para Edificio 2",p:["Instalaciones Para Edificio 1"]},
-{n:"Ciudad Y Comunidad",p:["Diseño Arquitectónico 5","Espacios Abiertos Vecinales"]}
-]},
+{n:"Ciudad Y Comunidad",p:["Diseño Arquitectónico 5","Espacios Abiertos Vecinales"]}]},
 {nombre:"VERANO", materias:[
 {n:"Taller De Diseño Arquitectónico 3",p:["Taller De Diseño Arquitectónico 2","Sistemas Constructivos Complejos","Diseño Arquitectónico 5","Representación Arquitectónica 5"]},
 {n:"Práctica Supervisada 1",p:["Gestión De Seguridad Y Salud Ocupacional"]},
-"Optativa 1"
-]}
-]},
+"Optativa 1"]}]},
 {año:"AÑO 4", semestres:[
 {nombre:"1° SEMESTRE", materias:[
 {n:"Diseño Arquitectónico 7",p:["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
@@ -203,8 +202,7 @@ const data = [
 {n:"Taller De Planos Y Especificaciones",p:["Introducción A La Investigación"]},
 {n:"Diseño Estructural Simplificado",p:["Análisis Estructural","Sistemas Constructivos Complejos"]},
 {n:"Instalaciones Para Edificio 3",p:["Instalaciones Para Edificio 2"]},
-{n:"Urbanismo",p:["Geomática","Diseño Arquitectónico 6","Ciudad Y Comunidad"]}
-]},
+{n:"Urbanismo",p:["Geomática","Diseño Arquitectónico 6","Ciudad Y Comunidad"]}]},
 {nombre:"2° SEMESTRE", materias:[
 {n:"Diseño Arquitectónico 8",p:["Diseño Arquitectónico 7","Representación Arquitectónica 6","Diseño Estructural Simplificado","Instalaciones Para Edificio 3"]},
 {n:"Arquitectura Y Ciudad 3",p:["Arquitectura Y Ciudad 2"]},
@@ -212,14 +210,11 @@ const data = [
 {n:"Estructuras Especiales",p:["Diseño Estructural Simplificado"]},
 {n:"Instalaciones Para Edificios 4",p:["Instalaciones Para Edificio 3"]},
 {n:"Espacios Abiertos Urbanos",p:["Diseño Arquitectónico 7","Urbanismo"]},
-{n:"Metodología Para La Elaboración De Tesis",p:["Diseño Arquitectónico 7","Arquitectura Y Ciudad 2","Representación Arquitectónica 6","Taller De Planos Y Especificaciones","Diseño Estructural Simplificado","Instalaciones Para Edificio 3","Urbanismo"]}
-]},
+{n:"Metodología Para La Elaboración De Tesis",p:["Diseño Arquitectónico 7","Arquitectura Y Ciudad 2","Representación Arquitectónica 6","Taller De Planos Y Especificaciones","Diseño Estructural Simplificado","Instalaciones Para Edificio 3","Urbanismo"]}]},
 {nombre:"VERANO", materias:[
 {n:"Taller De Urbanismo",p:["Diseño Arquitectónico 8","Espacios Abiertos Urbanos"]},
 {n:"Práctica Supervisada 2",p:["Práctica Supervisada 1"]},
-"Optativa 2"
-]}
-]},
+"Optativa 2"]}]},
 {año:"AÑO 5", semestres:[
 {nombre:"1° SEMESTRE", materias:[
 "Hist. De Las Relaciones De Pma Con Los EE.UU. I",
@@ -228,8 +223,7 @@ const data = [
 {n:"Programación Y Control De PYT",p:["Taller De Planos Y Especificaciones","Presupuesto De Obra"]},
 {n:"Gestión Profesional",p:["Diseño Arquitectónico 8","Práctica Supervisada 2"]},
 {n:"Ciudad Y Territorio",p:["Taller De Urbanismo"]},
-"Trabajo De Graduación 1"
-]},
+"Trabajo De Graduación 1"]},
 {nombre:"2° SEMESTRE", materias:[
 "Hist. De Las Relaciones De Pma Con Los EE.UU. II",
 {n:"Diseño Arquitectónico 10",p:["Diseño Arquitectónico 9"]},
@@ -237,10 +231,7 @@ const data = [
 {n:"Gestión Y Mantenimiento De Edificios",p:["Práctica Supervisada 2","Programación Y Control De PYT"]},
 {n:"Práctica Supervisada 3",p:["Representación Arquitectónica 6","Práctica Supervisada 2","Diseño Arquitectónico 9","Programación Y Control De PYT","Gestión Profesional","Ciudad Y Territorio"]},
 {n:"Gestión Urbana Y Territorial",p:["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
-{n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}
-]}
-]}
-];
+{n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}]}]}];
 
 function render(){
 const m=document.getElementById("malla");
@@ -271,8 +262,7 @@ data.forEach(a=>{
    }
    div.onclick=()=>{
     if(div.classList.contains("bloqueada"))return;
-    if(aprobado)localStorage.removeItem(nombre);
-    else localStorage.setItem(nombre,"ok");
+    aprobado?localStorage.removeItem(nombre):localStorage.setItem(nombre,"ok");
     render();
    };
    sd.appendChild(div);
@@ -285,6 +275,9 @@ data.forEach(a=>{
 const pct=Math.round(ok/total*100);
 document.getElementById("barra").style.width=pct+"%";
 document.getElementById("porcentaje").textContent="Progreso: "+pct+"%";
+let msg=mensajes[0].m;
+mensajes.forEach(x=>{if(pct>=x.p)msg=x.m});
+document.getElementById("mensaje").textContent=msg;
 }
 
 function reiniciar(){
