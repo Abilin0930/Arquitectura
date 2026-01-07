@@ -71,12 +71,114 @@ const mensajes = [
  {p:10,m:"Vas tomando forma, sigue así ✏️"},
  {p:25,m:"Ya estás construyendo bases sólidas 🧱"},
  {p:50,m:"Mitad del camino, tu esfuerzo se nota 💚"},
- {p:75,m:"Casi arquitecta, no te detengas 🏗️"},
+ {p:75,m:"Casi arquitecta/o, no te detengas 🏗️"},
  {p:90,m:"Estás muy cerca del sueño ✨"},
- {p:100,m:"¡LO LOGRASTE! Arquitecta en proceso 🎓"}
+ {p:100,m:"¡LO LOGRASTE! Manos A La Obra 🎓"}
 ];
 
-/* ---- TU DATA IGUAL ---- */
+const data = [
+{año:"AÑO 1", semestres:[
+{nombre:"1° SEMESTRE", materias:[
+"Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría",
+"Arte: Antigüedad A S. XVIII","Representación Arquitectónica 1",
+"Introducción A La Edificación","Matemática Aplicada"]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Física Aplicada",p:["Matemática Aplicada"]},
+{n:"Diseño Arquitectónico 2",p:["Diseño Arquitectónico 1","Composición Arquitectónica 1","Introducción A La Teoría","Representación Arquitectónica 1","Introducción A La Edificación"]},
+{n:"Composición Arquitectónica 2",p:["Composición Arquitectónica 1","Diseño Arquitectónico 1"]},
+{n:"Sistemas Constructivos Básicos",p:["Introducción A La Edificación"]},
+{n:"Arte: Moderno Y Contemporáneo",p:["Arte: Antigüedad A S. XVIII"]},
+{n:"Topografía",p:["Introducción A La Edificación","Matemática Aplicada"]},
+"Dibujo A Mano Alzada"]},
+{nombre:"VERANO", materias:[
+{n:"Taller De Diseño Arquitectónico 1",p:["Representación Arquitectónica 1","Diseño Arquitectónico 2"]},
+"Taller De Visualización","Geomática"]}]},
+{año:"AÑO 2", semestres:[
+{nombre:"1° SEMESTRE", materias:[
+"Español",
+{n:"Diseño Arquitectónico 3",p:["Introducción A La Teoría","Diseño Arquitectónico 2","Composición Arquitectónica 2","Sistemas Constructivos Básicos","Topografía","Taller De Diseño Arquitectónico 1"]},
+{n:"Interpretación De La Arquitectura",p:["Introducción A La Teoría"]},
+{n:"Representación Arquitectónica 2",p:["Representación Arquitectónica 1"]},
+{n:"Tecnología Del Hormigón Armado",p:["Introducción A La Edificación","Sistemas Constructivos Básicos"]},
+{n:"Modelos Estructurales",p:["Física Aplicada"]},
+"Introducción A La Investigación"]},
+{nombre:"2° SEMESTRE", materias:[
+"Inglés",
+{n:"Sociedad Medio Ambiente Y Des.",p:["Diseño Arquitectónico 3","Introducción A La Edificación"]},
+{n:"Diseño Arquitectónico 4",p:["Diseño Arquitectónico 3","Interpretación De La Arquitectura","Representación Arquitectónica 2","Tecnología Del Hormigón Armado"]},
+{n:"Textos Y Contextos De La Arq. Latinoamericana",p:["Interpretación De La Arquitectura"]},
+{n:"Representación Arquitectónica 3",p:["Representación Arquitectónica 2"]},
+{n:"Sistemas Constructivos Especiales",p:["Tecnología Del Hormigón Armado"]},
+{n:"Análisis Estructural",p:["Modelos Estructurales"]}]},
+{nombre:"VERANO", materias:[
+{n:"Taller De Diseño Arquitectónico 2",p:["Taller De Diseño Arquitectónico 1","Diseño Arquitectónico 4","Representación Arquitectónica 3","Sistemas Constructivos Especiales"]},
+"Electiva 1","Electiva 2"]}]},
+{año:"AÑO 3", semestres:[
+{nombre:"1° SEMESTRE", materias:[
+"Historia De Pma En El Mundo Global",
+{n:"Diseño Arquitectónico 5",p:["Diseño Arquitectónico 4","Textos Y Contextos De La Arq. Latinoamericana","Representación Arquitectónica 3","Sistemas Constructivos Especiales","Taller De Diseño Arquitectónico 2"]},
+{n:"Crítica De La Arquitectura Y Pensamiento Contemporáneo",p:["Textos Y Contextos De La Arq. Latinoamericana"]},
+{n:"Representación Arquitectónica 4",p:["Representación Arquitectónica 3"]},
+{n:"Sistemas Constructivos Complejos",p:["Sistemas Constructivos Especiales"]},
+{n:"Instalaciones Para Edificio 1",p:["Física Aplicada"]},
+{n:"Espacios Abiertos Vecinales",p:["Sociedad Medio Ambiente Y Des.","Topografía","Introducción A La Investigación","Diseño Arquitectónico 4"]}]},
+{nombre:"2° SEMESTRE", materias:[
+"Geografía De Panamá",
+{n:"Diseño Arquitectónico 6",p:["Diseño Arquitectónico 5","Crítica De La Arquitectura Y Pensamiento Contemporáneo","Representación Arquitectónica 4","Sistemas Constructivos Complejos","Instalaciones Para Edificio 1"]},
+{n:"Arquitectura Y Ciudad 1",p:["Arte: Moderno Y Contemporáneo"]},
+{n:"Representación Arquitectónica 5",p:["Representación Arquitectónica 4"]},
+{n:"Gestión De Seguridad Y Salud Ocupacional",p:["Sistemas Constructivos Complejos"]},
+{n:"Instalaciones Para Edificio 2",p:["Instalaciones Para Edificio 1"]},
+{n:"Ciudad Y Comunidad",p:["Diseño Arquitectónico 5","Espacios Abiertos Vecinales"]}]},
+{nombre:"VERANO", materias:[
+{n:"Taller De Diseño Arquitectónico 3",p:["Taller De Diseño Arquitectónico 2","Sistemas Constructivos Complejos","Diseño Arquitectónico 5","Representación Arquitectónica 5"]},
+{n:"Práctica Supervisada 1",p:["Gestión De Seguridad Y Salud Ocupacional"]},
+"Optativa 1"]}]},
+{año:"AÑO 4", semestres:[
+{nombre:"1° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 7",p:["Sistemas Constructivos Complejos","Diseño Arquitectónico 6","Instalaciones Para Edificio 2","Taller De Diseño Arquitectónico 3","Representación Arquitectónica 5"]},
+{n:"Arquitectura Y Ciudad 2",p:["Arquitectura Y Ciudad 1"]},
+{n:"Representación Arquitectónica 6",p:["Representación Arquitectónica 5"]},
+{n:"Taller De Planos Y Especificaciones",p:["Introducción A La Investigación"]},
+{n:"Diseño Estructural Simplificado",p:["Análisis Estructural","Sistemas Constructivos Complejos"]},
+{n:"Instalaciones Para Edificio 3",p:["Instalaciones Para Edificio 2"]},
+{n:"Urbanismo",p:["Geomática","Diseño Arquitectónico 6","Ciudad Y Comunidad"]}]},
+{nombre:"2° SEMESTRE", materias:[
+{n:"Diseño Arquitectónico 8",p:["Diseño Arquitectónico 7","Representación Arquitectónica 6","Diseño Estructural Simplificado","Instalaciones Para Edificio 3"]},
+{n:"Arquitectura Y Ciudad 3",p:["Arquitectura Y Ciudad 2"]},
+{n:"Presupuesto De Obra",p:["Sistemas Constructivos Complejos","Taller De Planos Y Especificaciones"]},
+{n:"Estructuras Especiales",p:["Diseño Estructural Simplificado"]},
+{n:"Instalaciones Para Edificios 4",p:["Instalaciones Para Edificio 3"]},
+{n:"Espacios Abiertos Urbanos",p:["Diseño Arquitectónico 7","Urbanismo"]},
+{n:"Metodología Para La Elaboración De Tesis",p:["Diseño Arquitectónico 7","Arquitectura Y Ciudad 2","Representación Arquitectónica 6","Taller De Planos Y Especificaciones","Diseño Estructural Simplificado","Instalaciones Para Edificio 3","Urbanismo"]}]},
+{nombre:"VERANO", materias:[
+{n:"Taller De Urbanismo",p:["Diseño Arquitectónico 8","Espacios Abiertos Urbanos"]},
+{n:"Práctica Supervisada 2",p:["Práctica Supervisada 1"]},
+"Optativa 2"]}]},
+{año:"AÑO 5", semestres:[
+{nombre:"1° SEMESTRE", materias:[
+"Hist. De Las Relaciones De Pma Con Los EE.UU. I",
+{n:"Diseño Arquitectónico 9",p:["Diseño Arquitectónico 8","Estructuras Especiales","Instalaciones Para Edificios 4"]},
+{n:"Arquitectura Y Ciudad 4",p:["Arquitectura Y Ciudad 3"]},
+{n:"Programación Y Control De PYT",p:["Taller De Planos Y Especificaciones","Presupuesto De Obra"]},
+{n:"Gestión Profesional",p:["Diseño Arquitectónico 8","Práctica Supervisada 2"]},
+{n:"Ciudad Y Territorio",p:["Taller De Urbanismo"]},
+"Trabajo De Graduación 1"]},
+{nombre:"2° SEMESTRE", materias:[
+"Hist. De Las Relaciones De Pma Con Los EE.UU. II",
+{n:"Diseño Arquitectónico 10",p:["Diseño Arquitectónico 9"]},
+{n:"Patrimonio Arquitectónico",p:["Arquitectura Y Ciudad 4"]},
+{n:"Gestión Y Mantenimiento De Edificios",p:["Práctica Supervisada 2","Programación Y Control De PYT"]},
+{n:"Práctica Supervisada 3",p:["Representación Arquitectónica 6","Práctica Supervisada 2","Diseño Arquitectónico 9","Programación Y Control De PYT","Gestión Profesional","Ciudad Y Territorio"]},
+{n:"Gestión Urbana Y Territorial",p:["Taller De Urbanismo","Diseño Arquitectónico 9","Gestión Profesional","Ciudad Y Territorio"]},
+{n:"Trabajo De Graduación 2",p:["Trabajo De Graduación 1"]}]}]}];
+
+async function render(){
+const m=document.getElementById("malla");
+m.innerHTML="";
+let total=0,ok=0;
+
+let materiasAprobadas = {};
 </script>
 
 <script>
