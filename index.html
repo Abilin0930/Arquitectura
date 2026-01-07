@@ -27,8 +27,108 @@ const db = firebase.firestore();
 </script>
 
 <style>
-/* ---- TU CSS IGUAL ---- */
+
+body{
+  font-family: Arial;
+  background:#f3f7ec;
+  margin:0;
+  padding:0;
+  color:#334;
+  text-align:center;
+}
+
+/* CONTENEDOR GENERAL */
+.malla{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
+}
+
+/* TARJETA DE AÑO */
+.ano{
+  background:#e8f1da;
+  border-radius:18px;
+  padding:20px;
+  width:320px;
+  box-shadow:0 5px 12px rgba(0,0,0,.08);
+}
+
+/* TITULOS */
+h1{
+  margin-top:25px;
+  color:#556b2f;
+  font-size:28px;
+}
+
+h2{
+  color:#5f7a32;
+}
+
+.semestre{
+  margin-top:10px;
+}
+
+.semestre h3{
+  background:#dbe8c9;
+  padding:8px;
+  border-radius:12px;
+}
+
+/* MATERIA */
+.materia{
+  background:white;
+  margin:6px 0;
+  padding:8px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+/* APROBADA */
+.aprobada{
+  background:#7da96b;
+  color:white;
+}
+
+/* BLOQUEADA */
+.bloqueada{
+  background:#dddddd;
+  color:#777;
+  cursor:not-allowed;
+}
+
+/* BARRA PROGRESO */
+.progreso-barra{
+  width:80%;
+  height:12px;
+  background:#dcdcdc;
+  border-radius:20px;
+  margin:0 auto;
+}
+
+#barra{
+  height:100%;
+  background:#7da96b;
+  border-radius:20px;
+}
+
+/* BOTON */
+button{
+  background:#7da96b;
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  margin:8px;
+}
+
+button:hover{
+  opacity:.8;
+}
 </style>
+
 </head>
 
 <body>
